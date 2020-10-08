@@ -1,0 +1,7 @@
+tournament
+we
+1200
+false
+1 min
+4
+2018 07 29 09 55 30

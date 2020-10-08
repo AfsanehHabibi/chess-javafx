@@ -1,0 +1,12 @@
+.image-view-wrapper:border {
+    -fx-border-color: black;
+    -fx-border-style: solid;
+    -fx-border-width: 5;
+}
+.gride{
+    -fx-background-image:
+url("chessboard-grey.gif");
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: cover;
+    -fx-background-position: center center;
+}
