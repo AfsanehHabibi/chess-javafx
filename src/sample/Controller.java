@@ -209,10 +209,9 @@ public class Controller extends FatherController implements Initializable {
                             Controller.count = !Controller.count;
                             System.out.println(line.charAt(0) - '0');
                             Platform.runLater(() -> {
-                                chess.chessboard[line.charAt(0) - '0'][line.charAt(1) - '0'].finalMove(
+                                chess.finalMove(
                                         line.charAt(0) - '0', line.charAt(1) - '0',
-                                        line.charAt(2) - '0', line.charAt(3) - '0',
-                                        chess.chessboard,temp_grid, false
+                                        line.charAt(2) - '0', line.charAt(3) - '0', false
                                 );
                                 notations.setText(notations.getText() + " " + line.substring(5));
                                 chess.setClicks(color);

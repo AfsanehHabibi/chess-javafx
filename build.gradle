@@ -1,0 +1,50 @@
+plugins {
+    id 'java'
+    id 'application'
+    id 'org.openjfx.javafxplugin' version '0.0.14'
+}
+
+repositories {
+    mavenCentral()
+    //maven { url 'https://repo.maven.apache.org/maven2' }
+    //maven { url 'https://repo.openjfx.io/maven/' }
+}
+
+dependencies {
+    implementation 'org.openjfx:javafx-controls:17'
+    implementation 'org.openjfx:javafx-fxml:17'
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_15
+    targetCompatibility = JavaVersion.VERSION_15
+}
+
+javafx {
+    version = "17"
+    modules = [ 'javafx.controls', 'javafx.fxml' ]
+}
+
+sourceSets {
+    main {
+        java {
+            srcDir 'src'
+        }
+    }
+}
+
+mainClassName = 'sample.Main'
+
+task runServerClass(type: JavaExec) {
+    main = 'sample.Server' // Specify the fully qualified name of your main class here
+    classpath = sourceSets.main.runtimeClasspath
+}
+
+task runClientClass(type: JavaExec) {
+    main = 'sample.Main' // Specify the fully qualified name of your main class here
+    classpath = sourceSets.main.runtimeClasspath
+}
+
+run {
+    jvmArgs = ['--module-path', classpath.asPath, '--add-modules', 'javafx.controls,javafx.fxml']
+}

@@ -1,6 +1,5 @@
 package sample;
 
-import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -80,19 +79,12 @@ public class Reply extends FatherController implements Initializable {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        for (int i = 0; i < 8; i++) {
-            for (int j = 0; j < 8; j++) {
-                grid.add(chess.chessboard[i][j].borderPane, j, i);
-            }
-        }
         int index = informations.indexOf(selectedItem);
         for (int i = 0; i <= index; i++) {
             final String finalLin = informations.get(i);
-            chess.chessboard[finalLin.charAt(0) - '0'][finalLin.charAt(1) - '0'].finalMove(
+            chess.finalMove(
                     finalLin.charAt(0) - '0', finalLin.charAt(1) - '0',
-                    finalLin.charAt(2) - '0', finalLin.charAt(3) - '0',
-                    chess.chessboard, temp_grid, false
-            );
+                    finalLin.charAt(2) - '0', finalLin.charAt(3) - '0', false);
         }
     }
 

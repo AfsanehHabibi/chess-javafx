@@ -48,11 +48,6 @@ public class WatchBoard extends FatherController implements Initializable{
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        for (int i = 0; i <8 ; i++) {
-            for (int j = 0; j <8 ; j++) {
-                grid.add(chess.chessboard[i][j].borderPane,j,i);
-            }
-        }
         Task t0=new Task() {
             @Override
             protected Object call() throws Exception {
@@ -63,10 +58,9 @@ public class WatchBoard extends FatherController implements Initializable{
                     moves.add(lin);
                     String finalLin = lin;
                     Platform.runLater(() -> {
-                        chess.chessboard[finalLin.charAt(0) - '0'][finalLin.charAt(1) - '0'].finalMove(
+                        chess.finalMove(
                                 finalLin.charAt(0) - '0', finalLin.charAt(1) - '0',
-                                finalLin.charAt(2) - '0', finalLin.charAt(3) - '0',
-                                chess.chessboard,temp_grid, false
+                                finalLin.charAt(2) - '0', finalLin.charAt(3) - '0', false
                         );
                         notations.setText(notations.getText() + " " + finalLin.substring(5));
                     });
@@ -97,12 +91,10 @@ public class WatchBoard extends FatherController implements Initializable{
                                 continue;
                             }
                             Platform.runLater(() -> {
-                                chess.chessboard[line.charAt(0) - '0'][line.charAt(1) - '0'].finalMove(
+                                chess.finalMove(
                                         line.charAt(0) - '0', line.charAt(1) - '0',
-                                        line.charAt(2) - '0', line.charAt(3) - '0',
-                                        chess.chessboard, temp_grid, false
-                                );
-                                notations.setText(notations.getText()+" "+line.substring(5));
+                                        line.charAt(2) - '0', line.charAt(3) - '0', false);
+                                notations.setText(notations.getText() + " " + line.substring(5));
                             });
                         }
                     }catch (Exception e){

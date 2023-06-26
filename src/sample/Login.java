@@ -40,7 +40,7 @@ public class Login {
 
     private void loadMainPage() {
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("main_scene.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("/fxml/main_scene.fxml"));
             stage.setScene(new Scene(root, 600, 600));
         } catch (Exception e) {
             e.printStackTrace();
@@ -48,7 +48,7 @@ public class Login {
     }
     public void loadSignUpPage() {
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("sign_up.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("/fxml/sign_up.fxml"));
             stage.setScene(new Scene(root, 600, 600));
         } catch (Exception e) {
             e.printStackTrace();

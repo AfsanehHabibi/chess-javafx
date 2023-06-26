@@ -12,8 +12,9 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<GridPane prefHeight="600.0" prefWidth="600.0" stylesheets="@css.css" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.WatchBoard">
+<GridPane prefHeight="600.0" prefWidth="600.0" stylesheets="@../../../sample/css.css" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
   <columnConstraints>
       <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
     <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="300.0" />
@@ -25,7 +26,7 @@
       <RowConstraints minHeight="10.0" prefHeight="100.0" vgrow="ALWAYS" />
   </rowConstraints>
    <children>
-      <GridPane fx:id="grid" prefHeight="334.0" prefWidth="293.0" styleClass="gride" stylesheets="@css.css" GridPane.columnIndex="1" GridPane.rowIndex="1">
+      <GridPane fx:id="grid" prefHeight="334.0" prefWidth="293.0" styleClass="gride" stylesheets="@../../../sample/css.css" GridPane.columnIndex="1" GridPane.rowIndex="1">
         <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -47,9 +48,22 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
       </GridPane>
+      <Label fx:id="game_time">
+         <font>
+            <Font size="18.0" />
+         </font>
+         <GridPane.margin>
+            <Insets left="30.0" />
+         </GridPane.margin></Label>
+      <Label fx:id="op_clock" GridPane.columnIndex="2">
+         <font>
+            <Font size="18.0" />
+         </font></Label>
       <ButtonBar prefHeight="40.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
         <buttons>
+          <Button mnemonicParsing="false" onMouseClicked="#askLose" text="lose" />
             <Button id="Main" fx:id="main_button" layoutX="215.0" layoutY="47.0" mnemonicParsing="false" onMouseClicked="#loadMain" text="Main" visible="false" />
+            <Button fx:id="draw" layoutX="89.0" layoutY="47.0" mnemonicParsing="false" onMouseClicked="#askDraw" text="Draw" />
         </buttons>
          <padding>
             <Insets right="60.0" />
@@ -72,6 +86,7 @@
             <HBox prefHeight="100.0" prefWidth="200.0" spacing="20.0">
                <children>
                   <Button fx:id="send_button" mnemonicParsing="false" onMouseClicked="#sendMassage" text="send" />
+                  <Button fx:id="close_button" mnemonicParsing="false" onMouseClicked="#closeChat" text="close" />
                </children>
             </HBox>
          </children>

@@ -39,9 +39,9 @@ public class Main extends Application {
         try {
             stage=primaryStage;
             stage.setResizable(false);
-            Parent root = FXMLLoader.load(getClass().getResource("login.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("/fxml/login.fxml"));
             primaryStage.setTitle("CHESS");
-            primaryStage.getIcons().add(new Image(Main.class.getResourceAsStream("chess_icon_blue.jpg")));
+            primaryStage.getIcons().add(new Image(Main.class.getResourceAsStream("/image/icon/chess_icon_blue.jpg")));
             primaryStage.setScene(new Scene(root, 600, 600));
             primaryStage.setOnCloseRequest((E)->{
                 try{
@@ -53,7 +53,8 @@ public class Main extends Application {
             });
             primaryStage.show();
         }catch (Exception e){
-            System.out.println(e);
+            System.out.println("loader error");
+            e.printStackTrace();
         }
     }
 
