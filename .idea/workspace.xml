@@ -4,9 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="82cb39b7-8d93-45b7-9c13-15d7b9a9750b" name="Default" comment="Change project structure to match default gradle structure&#10;&#10;* Fix discrepancy between client and server port value">
+    <list default="true" id="82cb39b7-8d93-45b7-9c13-15d7b9a9750b" name="Default" comment="Add .idea directory to gitignore">
+      <change afterPath="$PROJECT_DIR$/ChessManClass.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ChessGameLogic.json" beforeDir="false" afterPath="$PROJECT_DIR$/ChessGameLogic.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -440,7 +441,21 @@
       <option name="project" value="LOCAL" />
       <updated>1687946512112</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Add new dependency to enable running junit 4 tests">
+      <created>1687948879411</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1687948879411</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Add .idea directory to gitignore">
+      <created>1687953943609</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1687953943609</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
@@ -497,7 +512,9 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Restructure the project and add gradle build tool" />
     <MESSAGE value="Change project structure to match default gradle structure&#10;&#10;* Fix discrepancy between client and server port value" />
-    <option name="LAST_COMMIT_MESSAGE" value="Change project structure to match default gradle structure&#10;&#10;* Fix discrepancy between client and server port value" />
+    <MESSAGE value="Add new dependency to enable running junit 4 tests" />
+    <MESSAGE value="Add .idea directory to gitignore" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add .idea directory to gitignore" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/Tournament.java" />
