@@ -13,6 +13,7 @@ repositories {
 dependencies {
     implementation 'org.openjfx:javafx-controls:17'
     implementation 'org.openjfx:javafx-fxml:17'
+    testImplementation 'junit:junit:4.13'
 }
 
 java {
@@ -23,14 +24,6 @@ java {
 javafx {
     version = "17"
     modules = [ 'javafx.controls', 'javafx.fxml' ]
-}
-
-sourceSets {
-    main {
-        java {
-            srcDir 'src'
-        }
-    }
 }
 
 mainClassName = 'sample.Main'
@@ -47,4 +40,8 @@ task runClientClass(type: JavaExec) {
 
 run {
     jvmArgs = ['--module-path', classpath.asPath, '--add-modules', 'javafx.controls,javafx.fxml']
+}
+
+test {
+    useJUnitPlatform()
 }

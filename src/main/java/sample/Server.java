@@ -35,7 +35,7 @@ public class Server  {
         }
 
         try {
-                ServerSocket serverSocket=new ServerSocket(1290);
+                ServerSocket serverSocket=new ServerSocket(5642);
                 Socket clientSocket;
                 while (true){
                     clientSocket=serverSocket.accept();
