@@ -4,59 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="82cb39b7-8d93-45b7-9c13-15d7b9a9750b" name="Default" comment="Restructure the project and add gradle build tool">
-      <change afterPath="$PROJECT_DIR$/.idea/git_toolbox_prj.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gradle.properties" afterDir="false" />
+    <list default="true" id="82cb39b7-8d93-45b7-9c13-15d7b9a9750b" name="Default" comment="Change project structure to match default gradle structure&#10;&#10;* Fix discrepancy between client and server port value">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sample/About.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sample/About.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sample/Chess.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sample/Chess.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sample/Clock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sample/Clock.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sample/Color.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sample/Color.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sample/Controller.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sample/Controller.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sample/FatherController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sample/FatherController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sample/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sample/Game.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sample/GameRequestInformation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sample/GameRequestInformation.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sample/GameResult.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sample/GameResult.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sample/Login.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sample/Login.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sample/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sample/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sample/MainScene.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sample/MainScene.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sample/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sample/Player.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sample/Reply.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sample/Reply.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sample/RequestGame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sample/RequestGame.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sample/RoundRobinTournament.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sample/RoundRobinTournament.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sample/ScoreBoard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sample/ScoreBoard.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sample/SeekGame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sample/SeekGame.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sample/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sample/Server.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sample/ShowGameResult.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sample/ShowGameResult.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sample/ShowTournaments.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sample/ShowTournaments.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sample/SignUp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sample/SignUp.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sample/SwissTournament.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sample/SwissTournament.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sample/Tournament.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sample/Tournament.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sample/TournamentGame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sample/TournamentGame.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sample/TournamentState.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sample/TournamentState.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sample/WatchBoard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sample/WatchBoard.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sample/chessboard-grey.gif" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sample/chessboard-grey.gif" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sample/css.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sample/css.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sample/game/logic/ChessGameLogic.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sample/game/logic/ChessGameLogic.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sample/game/logic/chessman/Bishop.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sample/game/logic/chessman/Bishop.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sample/game/logic/chessman/ChessManClass.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sample/game/logic/chessman/ChessManClass.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sample/game/logic/chessman/Empty.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sample/game/logic/chessman/Empty.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sample/game/logic/chessman/King.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sample/game/logic/chessman/King.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sample/game/logic/chessman/Knight.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sample/game/logic/chessman/Knight.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sample/game/logic/chessman/Pawn.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sample/game/logic/chessman/Pawn.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sample/game/logic/chessman/Queen.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sample/game/logic/chessman/Queen.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sample/game/logic/chessman/Rook.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sample/game/logic/chessman/Rook.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sample/game/view/ChessboardIOController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sample/game/view/ChessboardIOController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sample/game/view/chessman/BishopView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sample/game/view/chessman/BishopView.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sample/game/view/chessman/ChessManView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sample/game/view/chessman/ChessManView.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sample/game/view/chessman/EmptyView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sample/game/view/chessman/EmptyView.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sample/game/view/chessman/KingView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sample/game/view/chessman/KingView.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sample/game/view/chessman/KnightView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sample/game/view/chessman/KnightView.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sample/game/view/chessman/PawnView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sample/game/view/chessman/PawnView.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sample/game/view/chessman/QueenView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sample/game/view/chessman/QueenView.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sample/game/view/chessman/RookView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sample/game/view/chessman/RookView.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sample/icons8-customer-50.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sample/icons8-customer-50.png" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -256,14 +206,14 @@
       <recent name="sample" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="F:\Coding\IntelliJ\Projects\chess_javafx\src\main\java" />
       <recent name="F:\Coding\IntelliJ\Projects\chess_javafx\src\test\java" />
+      <recent name="F:\Coding\IntelliJ\Projects\chess_javafx" />
+      <recent name="F:\Coding\IntelliJ\Projects\chess_javafx\src\main\java" />
       <recent name="F:\Coding\IntelliJ\Projects\chess_javafx\src\main\resources\fxml" />
       <recent name="F:\Coding\IntelliJ\Projects\chess_javafx\src\main\resources\image\icon" />
-      <recent name="F:\Coding\IntelliJ\Projects\chess_javafx\src\main\resources" />
     </key>
   </component>
-  <component name="RunManager" selected="Gradle.chess_javafx [run]">
+  <component name="RunManager" selected="Gradle.chess_javafx [test]">
     <configuration default="true" type="Applet" factoryName="Applet">
       <option name="HTML_USED" value="false" />
       <option name="WIDTH" value="400" />
@@ -282,6 +232,27 @@
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
+    </configuration>
+    <configuration name="MyTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="--tests &quot;MyTest&quot;" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":test" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <method v="2" />
     </configuration>
     <configuration name="RegressionTest0" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
@@ -321,27 +292,6 @@
         <option name="vmOptions" />
       </ExternalSystemSettings>
       <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
-      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
-      <DebugAllEnabled>false</DebugAllEnabled>
-      <method v="2" />
-    </configuration>
-    <configuration name="chess_javafx [runServerClass]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value="runServerClass" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
       <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
       <DebugAllEnabled>false</DebugAllEnabled>
       <method v="2" />
@@ -408,16 +358,16 @@
       <item itemvalue="Gradle.RegressionTest0" />
       <item itemvalue="Gradle.RegressionTest0.test01" />
       <item itemvalue="Gradle.chess_javafx [test]" />
-      <item itemvalue="Gradle.chess_javafx [runServerClass]" />
       <item itemvalue="Gradle.chess_javafx [run]" />
+      <item itemvalue="Gradle.MyTest" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Gradle.chess_javafx [run]" />
-        <item itemvalue="Gradle.chess_javafx [runServerClass]" />
-        <item itemvalue="Gradle.RegressionTest0.test01" />
         <item itemvalue="Gradle.chess_javafx [test]" />
+        <item itemvalue="Gradle.MyTest" />
+        <item itemvalue="Gradle.RegressionTest0.test01" />
         <item itemvalue="Gradle.RegressionTest0" />
+        <item itemvalue="Gradle.chess_javafx [run]" />
       </list>
     </recent_temporary>
   </component>
@@ -483,7 +433,14 @@
       <option name="project" value="LOCAL" />
       <updated>1687783667131</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Change project structure to match default gradle structure&#10;&#10;* Fix discrepancy between client and server port value">
+      <created>1687946512112</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1687946512112</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
@@ -539,7 +496,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Restructure the project and add gradle build tool" />
-    <option name="LAST_COMMIT_MESSAGE" value="Restructure the project and add gradle build tool" />
+    <MESSAGE value="Change project structure to match default gradle structure&#10;&#10;* Fix discrepancy between client and server port value" />
+    <option name="LAST_COMMIT_MESSAGE" value="Change project structure to match default gradle structure&#10;&#10;* Fix discrepancy between client and server port value" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/Tournament.java" />

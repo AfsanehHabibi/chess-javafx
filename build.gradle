@@ -6,14 +6,13 @@ plugins {
 
 repositories {
     mavenCentral()
-    //maven { url 'https://repo.maven.apache.org/maven2' }
-    //maven { url 'https://repo.openjfx.io/maven/' }
 }
 
 dependencies {
     implementation 'org.openjfx:javafx-controls:17'
     implementation 'org.openjfx:javafx-fxml:17'
-    testImplementation 'junit:junit:4.13'
+    testImplementation 'junit:junit:4.13.2'
+    testRuntimeOnly 'org.junit.vintage:junit-vintage-engine:5.8.2'
 }
 
 java {
