@@ -4,8 +4,7 @@
     -fx-border-width: 5;
 }
 .gride{
-    -fx-background-image:
-url("chessboard-grey.gif");
+    -fx-background-image: url("/image/background/chessboard-grey.gif");
     -fx-background-repeat: no-repeat;
     -fx-background-size: cover;
     -fx-background-position: center center;
