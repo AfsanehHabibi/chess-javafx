@@ -2,13 +2,26 @@ package sample.game.logic;
 
 import sample.*;
 import sample.game.logic.chessman.*;
+import sample.game.logic.exception.BoardWrongSizeException;
 
 public class ChessGameLogic {
 
     private ChessManClass[][] chessboard;
 
-    public ChessGameLogic(ChessManClass[][] chessboard) {
+    public ChessGameLogic(ChessManClass[][] chessboard) throws BoardWrongSizeException {
+        if (chessboard == null)
+            throw new BoardWrongSizeException();
+        if (chessboard.length != 8)
+            throw new BoardWrongSizeException();
+        for (int i = 0; i < 8; i++) {
+            if (chessboard[i] == null || chessboard[i].length != 8)
+                throw new BoardWrongSizeException();
+        }
         this.chessboard = chessboard;
+    }
+
+    public ChessGameLogic() {
+        this.chessboard = new ChessManClass[8][8];
     }
 
     public void setBoard() {
@@ -77,7 +90,11 @@ public class ChessGameLogic {
                 copy[i][j] = chessboard[i][j].clone();
             }
         }
-        return new ChessGameLogic(copy);
+        try {
+            return new ChessGameLogic(copy);
+        } catch (BoardWrongSizeException e) {
+            throw new RuntimeException();
+        }
     }
 
     public ChessManClass[][] getChessboard() {

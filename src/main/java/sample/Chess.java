@@ -4,6 +4,7 @@ import javafx.scene.layout.GridPane;
 import sample.game.logic.ChessGameLogic;
 import sample.game.logic.chessman.ChessManClass;
 import sample.game.logic.chessman.Empty;
+import sample.game.logic.exception.BoardWrongSizeException;
 import sample.game.view.ChessboardIOController;
 
 import java.io.IOException;
@@ -14,15 +15,13 @@ import static sample.Main.objectOutputStream;
 public class Chess extends Thread {
     Color color;
     private GridPane gridPane;
-    public ChessManClass[][] chessboard;
     private ChessGameLogic gameLogic;
     private ChessboardIOController chessboardIOController;
 
     Chess(Color color, GridPane gridPane) {
         this.color = color;
         this.gridPane = gridPane;
-        this.chessboard = new ChessManClass[8][8];
-        this.gameLogic = new ChessGameLogic(chessboard);
+        this.gameLogic = new ChessGameLogic();
         this.chessboardIOController = new ChessboardIOController(gameLogic, gridPane, this);
     }
 
@@ -62,9 +61,9 @@ public class Chess extends Thread {
     }
 
     public void finalMove(int i_src, int j_src, int i_dest, int j_dest, boolean send_data) {
-        if (chessboard[i_src][j_src] instanceof Empty)
+        if (gameLogic.getChessboard()[i_src][j_src] instanceof Empty)
             return;
-        boolean x = !(chessboard[i_dest][j_dest] instanceof Empty);
+        boolean x = !(gameLogic.getChessboard()[i_dest][j_dest] instanceof Empty);
         gameLogic.move(i_src, j_src, i_dest, j_dest);
         chessboardIOController.updateChessboard(i_src, j_src, i_dest, j_dest, gridPane, gameLogic.getChessboard());
         if (send_data) {
