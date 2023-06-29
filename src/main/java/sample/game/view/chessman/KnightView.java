@@ -8,9 +8,9 @@ public class KnightView extends ChessManView {
     public KnightView(Color color) {
         super(color);
         if (color == Color.White)
-            chess_picture = new Image("7WKnight.png", 40, 40, false, false);
+            chess_picture = new Image("/image/chessman/7WKnight.png", 40, 40, false, false);
         else
-            chess_picture = new Image("7BKnight.png", 40, 40, false, false);
+            chess_picture = new Image("/image/chessman/7BKnight.png", 40, 40, false, false);
         imageview.setImage(chess_picture);
         borderPane = new BorderPane(imageview);
     }
