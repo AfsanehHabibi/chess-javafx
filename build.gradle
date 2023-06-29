@@ -2,6 +2,7 @@ plugins {
     id 'java'
     id 'application'
     id 'org.openjfx.javafxplugin' version '0.0.14'
+    id 'info.solidsoft.pitest' version '1.9.0'
     id 'jacoco'
 }
 
@@ -51,4 +52,11 @@ test {
 
 jacocoTestReport {
     dependsOn test // tests are required to run before generating the report
+}
+
+pitest {
+    targetClasses = ['sample.game.logic.*']  //by default "${project.group}.*"
+    targetTests = ['*']
+    outputFormats = ['XML', 'HTML']
+    timestampedReports = false
 }
