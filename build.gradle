@@ -2,6 +2,7 @@ plugins {
     id 'java'
     id 'application'
     id 'org.openjfx.javafxplugin' version '0.0.14'
+    id 'jacoco'
 }
 
 repositories {
@@ -13,6 +14,7 @@ dependencies {
     implementation 'org.openjfx:javafx-fxml:17'
     testImplementation 'junit:junit:4.13.2'
     testRuntimeOnly 'org.junit.vintage:junit-vintage-engine:5.8.2'
+    implementation files('libs/randoop-4.3.2/randoop-all-4.3.2.jar')
 }
 
 java {
@@ -35,6 +37,7 @@ task runServerClass(type: JavaExec) {
 task runClientClass(type: JavaExec) {
     main = 'sample.Main' // Specify the fully qualified name of your main class here
     classpath = sourceSets.main.runtimeClasspath
+    jvmArgs = ['--module-path', classpath.asPath, '--add-modules', 'javafx.controls,javafx.fxml']
 }
 
 run {
@@ -43,4 +46,9 @@ run {
 
 test {
     useJUnitPlatform()
+    finalizedBy jacocoTestReport // report is always generated after tests run
+}
+
+jacocoTestReport {
+    dependsOn test // tests are required to run before generating the report
 }
