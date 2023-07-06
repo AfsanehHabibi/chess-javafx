@@ -3,7 +3,7 @@ package sample;
 import java.util.ArrayList;
 
 public class Game {
-    Player opponent;
+    User opponent;
     boolean isRated;
     boolean withClock;
     Color color;
@@ -11,16 +11,14 @@ public class Game {
     GameResult result;
     ArrayList<String> moves=new ArrayList<>();
 
-    public Game(GameRequestInformation request,Player opponent) {
+    public Game(GameRequestInformation request, User opponent) {
         this.isRated = request.rated;
         this.withClock = request.isTime;
         this.clock =request.clock;
         this.opponent=opponent;
     }
 
-
-
-    public Game(TournamentGame game, Color black,Player opponent) {
+    public Game(TournamentGame game, Color black, User opponent) {
         color=black;
         this.isRated = game.isRated;
         this.withClock = true;
@@ -28,7 +26,6 @@ public class Game {
         this.opponent=opponent;
 
     }
-
 
     public void setResult(GameResult result) {
         this.result = result;
@@ -46,6 +43,7 @@ public class Game {
         else
             return "0.5";
     }
+
     @Override
     public String toString() {
         return opponent.getUsername()+

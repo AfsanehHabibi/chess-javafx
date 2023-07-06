@@ -11,13 +11,13 @@ public class Tournament {
     long min_rating;
     boolean isRated;
     int size;
-    LinkedList<Player> players;
+    LinkedList<User> players;
     TournamentGame[][] results;
     Thread tour_tread;
     Clock game_time;
     Date date_start;
-    ArrayList<Player> blacks;
-    ArrayList<Player> whites;
+    ArrayList<User> blacks;
+    ArrayList<User> whites;
     TournamentState tournamentState;
     int id;
     int last_played_round=0;
@@ -58,7 +58,7 @@ public class Tournament {
         });
         tour_tread.start();
     }
-    public double getScoreTraditonal(TournamentGame[][] results,int rounds,Player player){
+    public double getScoreTraditonal(TournamentGame[][] results, int rounds, User player){
         double score=0;
         for (int i = 0; i <rounds ; i++) {
             for (int j = 0; j <results[0].length ; j++) {
@@ -83,7 +83,7 @@ public class Tournament {
             }
         }
     }
-    public boolean addPlayer(Player player){
+    public boolean addPlayer(User player){
         if (players.size()<size){
             players.add(player);
             return true;
@@ -94,7 +94,7 @@ public class Tournament {
         synchronized (this){
             try {
                 System.out.println(2*game_time.getMillis());
-                wait(2*game_time.getMillis());
+                wait(2L *game_time.getMillis());
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -113,7 +113,7 @@ public class Tournament {
                 +" "+tournamentState;
     }
 
-    public boolean removePlayer(Player login_player) {
+    public boolean removePlayer(User login_player) {
         if(players.contains(login_player) && tournamentState==TournamentState.Joining){
             players.remove(login_player);
             return true;

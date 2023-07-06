@@ -4,13 +4,13 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Vector;
 
-public class Player implements Serializable{
+public class User implements Serializable{
     String first_name;
     String last_name;
     String username;
     String password;
     String email;
-    String url="@icons8-customer-50.png";
+    String url;
     long rating=1200;
     int number_of_lose=0;
     int number_of_win=0;
@@ -25,7 +25,7 @@ public class Player implements Serializable{
         return password;
     }
 
-    public Player(String first_name,String last_name,String password,String email,String username,String url){
+    public User(String first_name, String last_name, String password, String email, String username, String url){
         this.first_name=first_name;
         this.last_name=last_name;
         this.password=password;
@@ -35,16 +35,16 @@ public class Player implements Serializable{
         games=new ArrayList<>();
     }
 
-    static String makeUserName(Vector<Player> users, String first_name, String last_name){
+    static String makeUserName(Vector<User> users, String first_name, String last_name){
         String temp=first_name.charAt(0)+"."+last_name;
         int counter=1;
         while (!isUserNameAvailable(temp,users)) {
-            temp = temp + String.valueOf(counter);
+            temp = temp + counter;
             counter++;
         }
         return temp;
     }
-    public static void calculateRatings(boolean draw,Player winner,Player loser){
+    public static void calculateRatings(boolean draw, User winner, User loser){
             winner.number_of_games++;
             loser.number_of_games++;
         if(!draw){
@@ -69,8 +69,8 @@ public class Player implements Serializable{
             return 20;
         }
     }
-    private static boolean isUserNameAvailable(String user_name, Vector<Player> players){
-        for (Player player : players) {
+    private static boolean isUserNameAvailable(String user_name, Vector<User> players){
+        for (User player : players) {
             if (player.getUsername().equals(user_name))
                 return false;
         }

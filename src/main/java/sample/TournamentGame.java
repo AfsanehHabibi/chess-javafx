@@ -1,17 +1,17 @@
 package sample;
 
 public class TournamentGame {
-    Player white;
-    Player black;
-    Player winner;
+    User white;
+    User black;
+    User winner;
     boolean isRated;
     Clock clock;
 
-    public void setWhitePlayer(Player white) {
+    public void setWhitePlayer(User white) {
         this.white = white;
     }
 
-    public void setBlackPlayer(Player black) {
+    public void setBlackPlayer(User black) {
         this.black = black;
     }
     public String format(){
@@ -33,7 +33,7 @@ public class TournamentGame {
         this.isRated = isRated;
         this.clock = clock;
     }
-    public void setWinner(Player winner){
+    public void setWinner(User winner){
         this.winner=winner;
     }
 

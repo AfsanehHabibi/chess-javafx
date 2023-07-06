@@ -2,7 +2,6 @@ package sample;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
 
@@ -65,9 +64,8 @@ public class RoundRobinTournament extends Tournament {
             }
     }
 
-
-    private void rotatePlayers(LinkedList<Player> players) {
-        Player temp=players.getLast();
+    private void rotatePlayers(LinkedList<User> players) {
+        User temp=players.getLast();
         players.removeLast();
         players.add(1,temp);
     }

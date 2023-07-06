@@ -34,7 +34,7 @@ public class SignUp extends FatherController implements Initializable{
     Label password_warn;
     @FXML
     Label email_warn;
-    String url="@icons8-customer-50.png";
+    String url="/image/icon/icons8-customer-50.png";
     boolean edit=false;
     public void imageChoose(){
         FileChooser fileChooser = new FileChooser();
