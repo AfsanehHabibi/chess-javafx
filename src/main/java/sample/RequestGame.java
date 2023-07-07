@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.Vector;
 
 import static sample.Main.objectInputStream;
 import static sample.Main.objectOutputStream;
@@ -19,29 +20,25 @@ import static sample.Main.objectOutputStream;
 public class RequestGame extends FatherController implements Initializable {
     @FXML
     VBox game_list;
-    ArrayList<String> games_info=new ArrayList<>();
-    ArrayList<String> games_on_info=new ArrayList<>();
-    static Thread waitforgame ;
+    ArrayList<String> gameRequests =new ArrayList<>();
+    Vector<Game> onGoingGames;
+    static Thread waitForGame;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
        refresh();
-        if (waitforgame == null || !waitforgame.isAlive()) {
-            waitforgame = new Thread(() -> {
-                boolean g = true;
-                while (g) {
+        if (waitForGame == null || !waitForGame.isAlive()) {
+            waitForGame = new Thread(() -> {
+                while (true) {
                     try {
                         synchronized (objectInputStream) {
-                            System.out.println("work" + this.toString());
                             if (objectInputStream.available() != 0) {
                                 String re = objectInputStream.readUTF();
                                 if (re.startsWith("game start") ) {
                                     Platform.runLater(this::loadGameBoard);
-                                    g = false;
                                     break;
-                                }else if(re.startsWith("watch")){
-                                    Platform.runLater(()->{
-                                        loadWatchBoard();
-                                    });
+                                } else if (re.startsWith("watch")){
+                                    Platform.runLater(this::loadWatchBoard);
                                     break;
                                 }
                             }
@@ -59,7 +56,7 @@ public class RequestGame extends FatherController implements Initializable {
                 }
             }
             );
-            waitforgame.start();
+            waitForGame.start();
         }
     }
 
@@ -76,17 +73,13 @@ public class RequestGame extends FatherController implements Initializable {
                     objectOutputStream.flush();
                     String receive = objectInputStream.readUTF();
                     while (!receive.startsWith("over")) {
-                        games_info.add(receive);
+                        gameRequests.add(receive);
                         receive = objectInputStream.readUTF();
                     }
-                    receive=objectInputStream.readUTF();
-                    while (!receive.startsWith("over")) {
-                        games_on_info.add(receive);
-                        receive = objectInputStream.readUTF();
-                    }
+                    onGoingGames = (Vector<Game>) objectInputStream.readObject();
                     objectInputStream.notifyAll();
                 }
-            } catch (IOException e) {
+            } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
             }
         });
@@ -96,29 +89,28 @@ public class RequestGame extends FatherController implements Initializable {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        System.out.println(games_info);
-        for (int i = 0; i <games_info.size() ; i++) {
-            String[] strings=games_info.get(i).split(" ");
-            HBox temp=new HBox();
+        for (String gameRequest : gameRequests) {
+            String[] strings = gameRequest.split(" ");
+            HBox temp = new HBox();
             temp.setSpacing(10);
             temp.getChildren().addAll(new Label(strings[2]),
-                    new Label(Boolean.getBoolean(strings[8])?"Rated":"UnRated"),new Label(strings[10]),
+                    new Label(Boolean.getBoolean(strings[8]) ? "Rated" : "UnRated"), new Label(strings[10]),
                     new Label(
-                            strings[13]+" "+strings[14]
+                            strings[13] + " " + strings[14]
                     ));
             System.out.println(strings[11]);
-            temp.setOnMouseClicked((event)->{
-                Task task=new Task() {
+            temp.setOnMouseClicked((event) -> {
+                Task task = new Task() {
                     @Override
                     protected Object call() throws Exception {
-                        String chose_op =strings[6];
-                        objectOutputStream.writeUTF("game with "+ chose_op +" "+strings[12]);
+                        String chose_op = strings[6];
+                        objectOutputStream.writeUTF("game with " + chose_op + " " + strings[12]);
                         System.out.println(strings[12]);
                         objectOutputStream.flush();
                         return null;
                     }
                 };
-                Thread t=new Thread(task);
+                Thread t = new Thread(task);
                 t.start();
                 try {
                     t.join();
@@ -129,29 +121,27 @@ public class RequestGame extends FatherController implements Initializable {
             game_list.getChildren().add(temp);
         }
         game_list.getChildren().add(new Label("watch"));
-        for (int i = 0; i <games_on_info.size() ; i++) {
-            String[] strings=games_on_info.get(i).split(" ");
-            HBox temp=new HBox();
+        for (Game onGoingGame : onGoingGames) {
+            HBox temp = new HBox();
             temp.setSpacing(10);
-            temp.getChildren().addAll(new Label(strings[0]),
-                    new Label(strings[2]),
-                    new Label(strings[3]
+            temp.getChildren().addAll(new Label(onGoingGame.getWhitePlayer().getUsername()),
+                    new Label(onGoingGame.getBlackPlayer().getUsername()),
+                    new Label(String.valueOf(onGoingGame.isRated())
                     ));
-            //System.out.println(strings[11]);
-            temp.setOnMouseClicked((event)->{
-                Task task=new Task() {
+            temp.setOnMouseClicked((event) -> {
+                Task task = new Task() {
                     @Override
                     protected Object call() throws Exception {
                         synchronized (objectInputStream) {
-                            String chose_op = strings[4];
-                            System.out.println(strings[4]);
-                            objectOutputStream.writeUTF("watch " + chose_op);
+                            String gameId = onGoingGame.getId();
+                            System.out.println(onGoingGame.getId());
+                            objectOutputStream.writeUTF("watch " + gameId);
                             objectOutputStream.flush();
                         }
                         return null;
                     }
                 };
-                Thread t=new Thread(task);
+                Thread t = new Thread(task);
                 t.start();
                 try {
                     t.join();

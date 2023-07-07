@@ -74,6 +74,7 @@ public class GameManager {
         if (isBlackJoined && isWhiteJoined) {
             whiteClient.sendColorAndClock(Color.White, game.getClock());
             blackClient.sendColorAndClock(Color.Black, game.getClock());
+            notifyPlayerToMove(currentBoard.clone());
         }
     }
 
@@ -113,6 +114,7 @@ public class GameManager {
     }
 
     public void requestDraw(ClientHandler client) {
+        if (isNotPlayer(client)) return;
         getOpponent(client).sendDrawRequest();
     }
 
@@ -125,6 +127,7 @@ public class GameManager {
     }
 
     public void acceptLose(ClientHandler client) {
+        if (isNotPlayer(client)) return;
         if (client != blackClient && client != whiteClient)
             return;
         /*if (in_tournament) {
@@ -132,9 +135,9 @@ public class GameManager {
             in_tournament = false;
             opponent.in_tournament = false;
         }*/
-        GameResult result = GameResult.WhiteWon;
+        GameResult result = GameResult.WHITE_WON;
         if (client == whiteClient)
-            result = GameResult.WhiteLost;
+            result = GameResult.WHITE_LOST;
         doEndGameStuff(result);
         if (game.isRated())
             User.calculateRatings(false, getOpponent(client).getLogin_player(), client.getLogin_player());
@@ -150,11 +153,13 @@ public class GameManager {
     }
 
     public void acceptDraw(ClientHandler client) {
+        if (isNotPlayer(client)) return;
         /*if (in_tournament) {
             tournamentGame.setWinner(null);
             in_tournament = false;
             opponent.in_tournament = false;
         }*/
+        doEndGameStuff(GameResult.DRAW);
         if (game.isRated())
             User.calculateRatings(true, getOpponent(client).getLogin_player(), client.getLogin_player());
         client.notifyDraw();
@@ -175,10 +180,25 @@ public class GameManager {
 
 
     public void messageOpponent(ClientHandler client, String message) {
+        if (isNotPlayer(client)) return;
         getOpponent(client).sendMessage(message);
     }
 
+    private boolean isNotPlayer(ClientHandler client) {
+        return (client != blackClient && client != whiteClient);
+    }
+
     public void messageAudiences(ClientHandler client, String message) {
+        if (isNotInAudiences(client)) return;
         for (ClientHandler audience : audiences) audience.sendMessage(message);
+    }
+
+    public void updateWatch(ClientHandler client) {
+        if (isNotInAudiences(client)) return;
+        client.sendPastMovesAndBoard(game.moves, currentBoard.clone());
+    }
+
+    private boolean isNotInAudiences(ClientHandler client) {
+        return !audiences.contains(client);
     }
 }

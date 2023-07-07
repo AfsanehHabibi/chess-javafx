@@ -1,19 +1,21 @@
 package sample.server;
 
-import sample.*;
+import sample.Clock;
+import sample.Color;
+import sample.Game;
+import sample.GameRequestInformation;
 import sample.game.logic.ChessGameLogic;
 import sample.game.model.Move;
-import sample.user.User;
 import sample.tournament.Tournament;
 import sample.tournament.TournamentGame;
 import sample.tournament.TournamentState;
+import sample.user.User;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.Objects;
 
 import static sample.server.Server.*;
 
@@ -23,18 +25,14 @@ public class ClientHandler implements Runnable {
     ObjectOutputStream objectOutputStream;
     ObjectInputStream objectInputStream;
     int id;
-    boolean in_tournament = false;
     Boolean isLoggedIn;
     Boolean isConnected;
     boolean isWatching;
     Game watch_game;
-    boolean turn = false;
     public Boolean isPlaying;
     Tournament tournament;
     ArrayList<GameRequestInformation> requests;
     TournamentGame tournamentGame;
-    ArrayList<ClientHandler> audiences = new ArrayList<>();
-    ChessGameLogic currentGameLogic;
     private GameManager currentGameManager;
 
     ClientHandler(Socket socket, int id) throws IOException {
@@ -233,19 +231,22 @@ public class ClientHandler implements Runnable {
     }
 
     private void readyToWatchOnGoingGame() throws IOException {
-        for (int i = 0; i < watch_game.moves.size(); i++) {
-            objectOutputStream.writeUTF(watch_game.moves.get(i));
-            objectOutputStream.flush();
-        }
-        objectOutputStream.writeUTF("over");
-        objectOutputStream.flush();
+        currentGameManager.updateWatch(this);
     }
 
     private void watchOnGoingGame(String receive) throws IOException {
         String[] strings = receive.split(" ");
         isWatching = true;
-        watch_game = on_going.get(Integer.parseInt(strings[1]));
-        watch_game.getGameManager().addToAudiences(this);
+        watch_game = getGameWithId(strings[1]);
+        currentGameManager = watch_game.getGameManager();
+        currentGameManager.addToAudiences(this);
+    }
+
+    private Game getGameWithId(String id) {
+        for (Game game : on_going)
+            if (game.getId().equals(id))
+                return game;
+        return null;
     }
 
     private void requestGamesInformation() throws IOException {
@@ -257,10 +258,8 @@ public class ClientHandler implements Runnable {
         }
         objectOutputStream.writeUTF("over");
         objectOutputStream.flush();
-        for (int i = 0; i < on_going.size(); i++) {
-            objectOutputStream.writeUTF(on_going.get(i).toString() + " " + i);
-            objectOutputStream.flush();
-        }
+        objectOutputStream.writeObject(on_going);
+        objectOutputStream.flush();
         objectOutputStream.writeUTF("over");
         objectOutputStream.flush();
     }
@@ -467,6 +466,21 @@ public class ClientHandler implements Runnable {
     public void sendMessage(String message) {
         try {
             objectOutputStream.writeUTF(message);
+            objectOutputStream.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void sendPastMovesAndBoard(ArrayList<String> moves, ChessGameLogic board) {
+        try {
+            for (String move : moves) {
+                objectOutputStream.writeUTF(move);
+                objectOutputStream.flush();
+            }
+            objectOutputStream.writeUTF("over");
+            objectOutputStream.flush();
+            objectOutputStream.writeObject(board);
             objectOutputStream.flush();
         } catch (IOException e) {
             e.printStackTrace();

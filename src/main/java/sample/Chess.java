@@ -28,10 +28,7 @@ public class Chess extends Thread {
         chessboardIOController.drawChessboard(gameLogic.getChessboard());
         try {
             chessboardIOController.setCells();
-        } catch (IllegalStateException ignored) {
-        }
-        if (color != null && color == Color.White)
-            chessboardIOController.setClicks(color, checkLose(color));
+        } catch (IllegalStateException ignored) {}
         super.run();
     }
 

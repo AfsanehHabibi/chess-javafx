@@ -1,5 +1,5 @@
 package sample;
 
 public enum GameResult {
-    WhiteWon, WhiteLost, Draw
+    UNDETERMINED, WHITE_WON, WHITE_LOST, DRAW
 }

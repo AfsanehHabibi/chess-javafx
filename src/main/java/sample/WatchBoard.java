@@ -9,10 +9,10 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
+import sample.game.logic.ChessGameLogic;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import static sample.Main.objectInputStream;
@@ -22,26 +22,24 @@ public class WatchBoard extends FatherController implements Initializable{
     @FXML
     GridPane grid;
     @FXML
-    Label notations;
+    Label notationsHolder;
     @FXML
-    Button main_button;
+    Button mainButton;
     @FXML
-    ChoiceBox<String> chatReciever;
+    ChoiceBox<String> chatReceiver;
     @FXML
     TextField massage;
     @FXML
     Label chat;
     @FXML
-    Button send_button;
+    Button sendButton;
     private Chess chess;
-    private GridPane temp_grid;
-    private ArrayList<String> moves=new ArrayList<>();
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        chatReciever.getItems().add("Group");
-        chatReciever.setValue("Group");
-        temp_grid=grid;
-        chess=new Chess(null,grid);
+        chatReceiver.getItems().add("Group");
+        chatReceiver.setValue("Group");
+        chess = new Chess(null, grid);
         chess.start();
         try {
             chess.join();
@@ -53,19 +51,18 @@ public class WatchBoard extends FatherController implements Initializable{
             protected Object call() throws Exception {
                 objectOutputStream.writeUTF("ready to watch");
                 objectOutputStream.flush();
-                String lin=objectInputStream.readUTF();
-                while (!lin.equals("over")) {
-                    moves.add(lin);
-                    String finalLin = lin;
-                    Platform.runLater(() -> {
-                        chess.finalMove(
-                                finalLin.charAt(0) - '0', finalLin.charAt(1) - '0',
-                                finalLin.charAt(2) - '0', finalLin.charAt(3) - '0', false
-                        );
-                        notations.setText(notations.getText() + " " + finalLin.substring(5));
-                    });
-                    lin = objectInputStream.readUTF();
+                String line = objectInputStream.readUTF();
+                StringBuilder notations = new StringBuilder();
+                while (!line.equals("over")) {
+                    notations.append(" ").append(line);
+                    line = objectInputStream.readUTF();
                 }
+                ChessGameLogic gameLogic = (ChessGameLogic) objectInputStream.readObject();
+                String finalNotations = notations.toString();
+                Platform.runLater(() -> {
+                    notationsHolder.setText(finalNotations);
+                    chess.update(gameLogic);
+                });
                 return null;
             }
         };
@@ -84,17 +81,17 @@ public class WatchBoard extends FatherController implements Initializable{
                         if(objectInputStream.available()!=0) {
                             String line = objectInputStream.readUTF();
                             if(line.equals("over")){
-                                main_button.setVisible(true);
+                                mainButton.setVisible(true);
                                 break;
                             }else if(line.startsWith("chat ")){
                                 Platform.runLater(()-> chat.setText(chat.getText()+"\n"+line.substring(10)));
                                 continue;
                             }
+                            ChessGameLogic gameLogic = (ChessGameLogic) objectInputStream.readObject();
+                            String notation = objectInputStream.readUTF();
                             Platform.runLater(() -> {
-                                chess.finalMove(
-                                        line.charAt(0) - '0', line.charAt(1) - '0',
-                                        line.charAt(2) - '0', line.charAt(3) - '0', false);
-                                notations.setText(notations.getText() + " " + line.substring(5));
+                                notationsHolder.setText(notationsHolder.getText() + " " + notation);
+                                chess.update(gameLogic);
                             });
                         }
                     }catch (Exception e){
@@ -106,12 +103,13 @@ public class WatchBoard extends FatherController implements Initializable{
         Thread t=new Thread(task);
         t.start();
     }
+
     public void sendMassage() {
             Thread send = new Thread(() -> {
                 try {
                     objectOutputStream.writeUTF("chat group "+massage.getText());
                     objectOutputStream.flush();
-                    Platform.runLater(()-> notations.setText(notations.getText()+" "+massage.getText()));
+                    Platform.runLater(()-> notationsHolder.setText(notationsHolder.getText()+" "+massage.getText()));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

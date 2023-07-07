@@ -6,18 +6,18 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Vector;
 
-public class User implements Serializable{
-    String firstName;
-    String lastName;
+public class User implements Serializable {
+    transient String firstName;
+    transient String lastName;
     String username;
-    String password;
-    String email;
-    String url;
+    transient String password;
+    transient String email;
+    transient String url;
     long rating = 1200;
-    int numberOfLose = 0;
-    int numberOfWin = 0;
-    int numberOfGames = 0;
-    ArrayList<Game> games;
+    transient int numberOfLose = 0;
+    transient int numberOfWin = 0;
+    transient int numberOfGames = 0;
+    transient ArrayList<Game> games;
 
     public void setFirstName(String firstName) {
         this.firstName = firstName;
