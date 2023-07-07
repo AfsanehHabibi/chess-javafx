@@ -1,5 +1,9 @@
-package sample;
+package sample.server;
 
+import sample.Color;
+import sample.Game;
+import sample.GameRequestInformation;
+import sample.user.User;
 import sample.tournament.RoundRobinTournament;
 import sample.tournament.Tournament;
 import sample.tournament.TournamentGame;
@@ -76,14 +80,14 @@ public class Server  {
         return null;
     }
     public static void prepareTournamentGame(ClientHandler client, TournamentGame game){
-        client.isPlaying=true;
+        /*client.isPlaying=true;
         client.in_tournament=true;
         client.opponent=Server.findPlayer(game.getWhitePlayer());
         client.opponent.opponent=client;
         client.opponent.in_tournament=true;
         client.tournamentGame=game;
         client.opponent.tournamentGame=game;
-        client.current_game=new Game(game,Color.Black,client.opponent.login_player);
+        client.current_game=new Game(game, Color.Black,client.opponent.login_player);
         client.opponent.current_game=new Game(game,Color.White,client.login_player);
         client.turn=false;
         gameRequests.removeAll(client.opponent.requests);
@@ -96,7 +100,7 @@ public class Server  {
             client.opponent.objectOutputStream.flush();
             client.objectOutputStream.writeUTF("tournament game start");
             client.objectOutputStream.flush();
-        }catch (Exception e){e.printStackTrace();}
+        }catch (Exception e){e.printStackTrace();}*/
     }
 }
 

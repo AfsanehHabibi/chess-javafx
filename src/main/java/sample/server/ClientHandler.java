@@ -1,7 +1,9 @@
-package sample;
+package sample.server;
 
+import sample.*;
 import sample.game.logic.ChessGameLogic;
 import sample.game.model.Move;
+import sample.user.User;
 import sample.tournament.Tournament;
 import sample.tournament.TournamentGame;
 import sample.tournament.TournamentState;
@@ -13,7 +15,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Objects;
 
-import static sample.Server.*;
+import static sample.server.Server.*;
 
 public class ClientHandler implements Runnable {
     Socket socket;
@@ -27,15 +29,13 @@ public class ClientHandler implements Runnable {
     boolean isWatching;
     Game watch_game;
     boolean turn = false;
-    Boolean isPlaying;
+    public Boolean isPlaying;
     Tournament tournament;
     ArrayList<GameRequestInformation> requests;
-    ClientHandler opponent;
-    Game current_game;
     TournamentGame tournamentGame;
     ArrayList<ClientHandler> audiences = new ArrayList<>();
-    boolean join_game;
     ChessGameLogic currentGameLogic;
+    private GameManager currentGameManager;
 
     ClientHandler(Socket socket, int id) throws IOException {
         this.socket = socket;
@@ -113,113 +113,53 @@ public class ClientHandler implements Runnable {
 
     private void play(String receive) throws IOException {
         if (receive.startsWith("ready to play")) {
-            join_game = true;
-            if (opponent.join_game) {
-                if (opponent.current_game.color == Color.White) {
-                    opponent.turn = true;
-                } else if (this.current_game.color == Color.White) {
-                    turn = true;
-                }
-                objectOutputStream.writeUTF("start");
-                objectOutputStream.flush();
-                objectOutputStream.writeObject(this.current_game.color);
-                objectOutputStream.flush();
-                objectOutputStream.writeObject(current_game.clock);
-                objectOutputStream.flush();
-                opponent.objectOutputStream.writeUTF("start");
-                opponent.objectOutputStream.flush();
-                opponent.objectOutputStream.writeObject(opponent.current_game.color);
-                opponent.objectOutputStream.flush();
-                opponent.objectOutputStream.writeObject(opponent.current_game.clock);
-                opponent.objectOutputStream.flush();
-            }
-        } else if (turn) {
+            currentGameManager.readyToStart(this);
+        } else {
             Move move = null;
-            System.out.println(login_player.username);
             try {
                 move = (Move) objectInputStream.readObject();
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             }
-            if (currentGameLogic.canMove(move.iSrc, move.jSrc, move.iDes, move.jDes)) {
-                currentGameLogic.move(move.iSrc, move.jSrc, move.iDes, move.jDes);
-
-                current_game.moves.add(receive);
-                opponent.current_game.moves.add(receive);
-
-                //!!! do not change this, sending the object without cloning it leads to unexpected
-                // results
-                ChessGameLogic lastVersion = currentGameLogic.clone();
-                sendNewGameMove(receive, lastVersion, objectOutputStream);
-                sendNewGameMove(receive, lastVersion, opponent.objectOutputStream);
-
-                for (ClientHandler audience : audiences) {
-                    sendNewGameMove(receive, lastVersion, audience.objectOutputStream);
-                }
-
-                updateTurn();
-
-                notifyPlayerToMove(lastVersion);
-            }
+            currentGameManager.move(this, move, receive);
         }
     }
 
-    private void notifyPlayerToMove(ChessGameLogic lastVersion) throws IOException {
-        opponent.objectOutputStream.writeUTF("allow to move");
-        opponent.objectOutputStream.flush();
-        opponent.objectOutputStream.writeObject(lastVersion);
-        opponent.objectOutputStream.flush();
+    public void notifyToMove(ChessGameLogic lastVersion) {
+        try {
+            objectOutputStream.writeUTF("allow to move");
+            objectOutputStream.flush();
+            objectOutputStream.writeObject(lastVersion);
+            objectOutputStream.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-    private void updateTurn() {
-        opponent.turn = true;
-        turn = false;
-    }
-
-    private void sendNewGameMove(String notation, ChessGameLogic board, ObjectOutputStream outputStream)
-            throws IOException {
-        outputStream.writeUTF("new move");
-        outputStream.flush();
-        outputStream.writeObject(board);
-        outputStream.flush();
-        outputStream.writeUTF(notation);
-        outputStream.flush();
+    public void sendNewGameMove(String notation, ChessGameLogic board) {
+        try {
+            objectOutputStream.writeUTF("new move");
+            objectOutputStream.flush();
+            objectOutputStream.writeObject(board);
+            objectOutputStream.flush();
+            objectOutputStream.writeUTF(notation);
+            objectOutputStream.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void playerHasLost() throws IOException {
-        if (in_tournament) {
-            tournamentGame.setWinner(opponent.login_player);
-            in_tournament = false;
-            opponent.in_tournament = false;
-        }
-        for (ClientHandler audience : audiences) {
-            audience.objectOutputStream.writeUTF("over");
-            audience.objectOutputStream.flush();
-        }
-        on_going.remove(current_game);
-        current_game.setResult(GameResult.Lose);
-        opponent.current_game.setResult(GameResult.Win);
-        login_player.addGame(current_game);
-        opponent.login_player.addGame(opponent.current_game);
-        System.out.println("login player moves\n" + login_player.games.get(0).moves);
-        if (current_game.isRated)
-            User.calculateRatings(false, opponent.login_player, login_player);
-        objectOutputStream.writeUTF("finish lose");
-        objectOutputStream.flush();
-        isPlaying = false;
-        opponent.isPlaying = false;
-        opponent.objectOutputStream.writeUTF("finish win");
-        opponent.objectOutputStream.flush();
+        currentGameManager.acceptLose(this);
     }
 
     private void requestDraw() throws IOException {
-        opponent.objectOutputStream.writeUTF("want a draw");
-        opponent.objectOutputStream.flush();
+        currentGameManager.requestDraw(this);
     }
 
     private void requestGameHistory() throws IOException {
-        for (int i = 0; i < login_player.games.size(); i++) {
-            objectOutputStream.writeUTF(login_player.games.get(i).toString());
+        for (int i = 0; i < login_player.getGames().size(); i++) {
+            objectOutputStream.writeUTF(login_player.getGames().get(i).toString());
             objectOutputStream.flush();
         }
         objectOutputStream.writeUTF("over");
@@ -228,70 +168,22 @@ public class ClientHandler implements Runnable {
 
     private void chat(String receive) throws IOException {
         if (receive.startsWith("chat op")) {
-            opponent.objectOutputStream.writeUTF(receive);
-            opponent.objectOutputStream.flush();
+            currentGameManager.messageOpponent(this, receive);
         } else {
-            for (ClientHandler clientHandler : audiences) {
-                clientHandler.objectOutputStream.writeUTF(receive);
-                clientHandler.objectOutputStream.flush();
-            }
+            currentGameManager.messageAudiences(this, receive);
         }
     }
 
     private void acceptDraw() throws IOException {
-        if (in_tournament) {
-            tournamentGame.setWinner(null);
-            in_tournament = false;
-            opponent.in_tournament = false;
-        }
-        for (ClientHandler audience : audiences) {
-            audience.objectOutputStream.writeUTF("over");
-            audience.objectOutputStream.flush();
-        }
-        on_going.remove(current_game);
-        current_game.setResult(GameResult.Draw);
-        opponent.current_game.setResult(GameResult.Draw);
-        login_player.addGame(current_game);
-        opponent.login_player.addGame(opponent.current_game);
-        System.out.println("login player moves\n" + login_player.games.get(0).moves);
-        if (current_game.isRated)
-            User.calculateRatings(true, opponent.login_player, login_player);
-        isPlaying = false;
-        opponent.isPlaying = false;
-        objectOutputStream.writeUTF("finish draw");
-        objectOutputStream.flush();
-        opponent.objectOutputStream.writeUTF("finish draw");
-        opponent.objectOutputStream.flush();
+        currentGameManager.acceptDraw(this);
     }
 
     private void acceptGameRequest(String receive) throws IOException {
         String[] strings = receive.split(" ");
-        isPlaying = true;
-        opponent = clients.get(Integer.parseInt(strings[2]));
-        opponent.opponent = this;
-        current_game = new Game(opponent.requests.get(Integer.parseInt(strings[3])), opponent.login_player);
-        opponent.current_game = new Game(opponent.requests.get(Integer.parseInt(strings[3])), this.login_player);
-        currentGameLogic = new ChessGameLogic();
-        opponent.currentGameLogic = currentGameLogic;
-        on_going.add(current_game);
-        turn = false;
-        if (opponent.requests.get(Integer.parseInt(strings[3])).color == Color.Black) {
-            opponent.current_game.setColor(Color.Black);
-            this.current_game.setColor(Color.White);
-        } else {
-            opponent.current_game.setColor(Color.White);
-            this.current_game.setColor(Color.Black);
-        }
-        gameRequests.removeAll(opponent.requests);
-        gameRequests.removeAll(this.requests);
-        opponent.requests.clear();
-        this.requests.clear();
-        opponent.isPlaying = true;
-        System.out.println(Integer.parseInt(strings[2]));
-        clients.get(Integer.parseInt(strings[2])).objectOutputStream.writeUTF("game starting");
-        clients.get(Integer.parseInt(strings[2])).objectOutputStream.flush();
-        objectOutputStream.writeUTF("game starting");
-        objectOutputStream.flush();
+        ClientHandler opponent = clients.get(Integer.parseInt(strings[2]));
+        GameRequestInformation request = opponent.requests.get(Integer.parseInt(strings[3]));
+        new GameManager(this, opponent,
+                request);
     }
 
     private void getScoreBoard() throws IOException {
@@ -336,25 +228,7 @@ public class ClientHandler implements Runnable {
     private void exist() throws IOException {
         isConnected = false;
         if (isPlaying) {
-            for (ClientHandler audience : audiences) {
-                audience.objectOutputStream.writeUTF("over");
-                audience.objectOutputStream.flush();
-            }
-            if (in_tournament) {
-                tournamentGame.setWinner(opponent.login_player);
-                in_tournament = false;
-                opponent.in_tournament = false;
-            }
-            current_game.setResult(GameResult.Lose);
-            opponent.current_game.setResult(GameResult.Win);
-            login_player.addGame(current_game);
-            opponent.login_player.addGame(opponent.current_game);
-            if (current_game.isRated)
-                User.calculateRatings(false, opponent.login_player, login_player);
-            isPlaying = false;
-            opponent.isPlaying = false;
-            opponent.objectOutputStream.writeUTF("finish win");
-            opponent.objectOutputStream.flush();
+            currentGameManager.acceptLose(this);
         }
     }
 
@@ -371,15 +245,12 @@ public class ClientHandler implements Runnable {
         String[] strings = receive.split(" ");
         isWatching = true;
         watch_game = on_going.get(Integer.parseInt(strings[1]));
-        Objects.requireNonNull(findPlayer(watch_game.opponent)).audiences.add(this);
-        Objects.requireNonNull(findPlayer(watch_game.opponent).opponent).audiences.add(this);
-        objectOutputStream.writeUTF("watch this");
-        objectOutputStream.flush();
+        watch_game.getGameManager().addToAudiences(this);
     }
 
     private void requestGamesInformation() throws IOException {
         for (GameRequestInformation gameRequest : gameRequests) {
-            if (!gameRequest.getSeek_player().equals(login_player)) {
+            if (!gameRequest.getSeekerPlayer().equals(login_player)) {
                 objectOutputStream.writeUTF(gameRequest.toString());
                 objectOutputStream.flush();
             }
@@ -401,8 +272,8 @@ public class ClientHandler implements Runnable {
         String confirmation = objectInputStream.readUTF();
         if (confirmation.equals("ready to receive notations")) {
             System.out.println("ready to receive notations");
-            System.out.println("login player moves result\n" + login_player.games.get(0).moves);
-            for (String move : login_player.games.get(0).moves) {
+            System.out.println("login player moves result\n" + login_player.getGames().get(0).moves);
+            for (String move : login_player.getGames().get(0).moves) {
                 objectOutputStream.writeUTF(move);
                 System.out.println(move);
                 objectOutputStream.flush();
@@ -478,8 +349,8 @@ public class ClientHandler implements Runnable {
         if (line.equals("is edit")) {
             objectOutputStream.writeUTF("yes " + login_player.getFirstName() + " " +
                     login_player.getLastName() + " " +
-                    login_player.email + " "
-                    + login_player.url
+                    login_player.getEmail() + " "
+                    + login_player.getUrl()
             );
             objectOutputStream.flush();
         }
@@ -505,6 +376,100 @@ public class ClientHandler implements Runnable {
         if (!find) {
             objectOutputStream.writeUTF("Player doesn't exist");
             objectOutputStream.flush();
+        }
+    }
+
+    public User getLogin_player() {
+        return login_player;
+    }
+
+    public void setCurrentGameManager(GameManager gameManager) {
+        this.currentGameManager = gameManager;
+    }
+
+    public void notifyStartOfTheGame() {
+        try {
+            objectOutputStream.writeUTF("game starting");
+            objectOutputStream.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void sendColorAndClock(Color color, Clock clock) {
+        try {
+            objectOutputStream.writeUTF("start");
+            objectOutputStream.flush();
+            objectOutputStream.writeObject(color);
+            objectOutputStream.flush();
+            objectOutputStream.writeObject(clock);
+            objectOutputStream.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    //this is when opponent has asked for draw
+    public void sendDrawRequest() {
+        try {
+            objectOutputStream.writeUTF("want a draw");
+            objectOutputStream.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void notifyGameIsOver() {
+        try {
+            objectOutputStream.writeUTF("over");
+            objectOutputStream.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void notifyGameLose() {
+        try {
+            objectOutputStream.writeUTF("finish lose");
+            objectOutputStream.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void notifyGameWin() {
+        try {
+            objectOutputStream.writeUTF("finish win");
+            objectOutputStream.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void notifyGameWatch() {
+        try {
+            objectOutputStream.writeUTF("watch this");
+            objectOutputStream.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void notifyDraw() {
+        try {
+            objectOutputStream.writeUTF("finish draw");
+            objectOutputStream.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void sendMessage(String message) {
+        try {
+            objectOutputStream.writeUTF(message);
+            objectOutputStream.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }

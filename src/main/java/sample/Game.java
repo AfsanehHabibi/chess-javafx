@@ -1,23 +1,37 @@
 package sample;
 
+import sample.server.GameManager;
+import sample.user.User;
 import sample.tournament.TournamentGame;
 
 import java.util.ArrayList;
 
 public class Game {
     User opponent;
+    User whitePlayer;
+    User blackPlayer;
     boolean isRated;
     boolean withClock;
     Color color;
     Clock clock;
     GameResult result;
-    ArrayList<String> moves=new ArrayList<>();
+    public ArrayList<String> moves=new ArrayList<>();
+    //remove this dependency later by making server keep game managers rather than games
+    private GameManager gameManager;
 
     public Game(GameRequestInformation request, User opponent) {
         this.isRated = request.rated;
         this.withClock = request.isTime;
         this.clock =request.clock;
         this.opponent=opponent;
+    }
+
+    public Game(GameRequestInformation request, User whitePlayer, User blackPlayer) {
+        this.isRated = request.rated;
+        this.withClock = request.isTime;
+        this.clock = request.clock;
+        this.whitePlayer = whitePlayer;
+        this.blackPlayer = blackPlayer;
     }
 
     public Game(TournamentGame game, Color black, User opponent) {
@@ -37,20 +51,27 @@ public class Game {
         this.color = color;
     }
 
-    public String stringResult(){
-        if(result==GameResult.Win)
-            return "1";
-        if(result==GameResult.Lose)
-            return "0";
-        else
-            return "0.5";
-    }
-
     @Override
     public String toString() {
         return opponent.getUsername()+
-                " "+stringResult()+
+                " "+result.name()+
                 " "+opponent.getRating()+
                 " "+color;
+    }
+
+    public Clock getClock() {
+        return clock;
+    }
+
+    public boolean isRated() {
+        return isRated;
+    }
+
+    public void setGameManager(GameManager gameManager) {
+        this.gameManager = gameManager;
+    }
+
+    public GameManager getGameManager() {
+        return gameManager;
     }
 }
