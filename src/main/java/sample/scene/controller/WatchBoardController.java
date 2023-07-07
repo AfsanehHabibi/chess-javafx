@@ -1,4 +1,4 @@
-package sample;
+package sample.scene.controller;
 
 import javafx.application.Platform;
 import javafx.concurrent.Task;
@@ -9,6 +9,7 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
+import sample.Chess;
 import sample.game.logic.ChessGameLogic;
 
 import java.io.IOException;
@@ -18,7 +19,7 @@ import java.util.ResourceBundle;
 import static sample.Main.objectInputStream;
 import static sample.Main.objectOutputStream;
 
-public class WatchBoard extends FatherController implements Initializable{
+public class WatchBoardController extends FatherController implements Initializable {
     @FXML
     GridPane grid;
     @FXML
@@ -33,6 +34,7 @@ public class WatchBoard extends FatherController implements Initializable{
     Label chat;
     @FXML
     Button sendButton;
+
     private Chess chess;
 
     @Override
@@ -83,7 +85,7 @@ public class WatchBoard extends FatherController implements Initializable{
                             if(line.equals("over")){
                                 mainButton.setVisible(true);
                                 break;
-                            }else if(line.startsWith("chat ")){
+                            } else if(line.startsWith("chat ")) {
                                 Platform.runLater(()-> chat.setText(chat.getText()+"\n"+line.substring(10)));
                                 continue;
                             }
@@ -94,7 +96,7 @@ public class WatchBoard extends FatherController implements Initializable{
                                 chess.update(gameLogic);
                             });
                         }
-                    }catch (Exception e){
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
@@ -121,8 +123,5 @@ public class WatchBoard extends FatherController implements Initializable{
                 e.printStackTrace();
             }
             massage.clear();
-    }
-    public void loadMain(){
-        super.loadPage("main_scene");
     }
 }

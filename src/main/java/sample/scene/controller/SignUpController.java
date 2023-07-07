@@ -1,4 +1,4 @@
-package sample;
+package sample.scene.controller;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -17,7 +17,7 @@ import java.util.ResourceBundle;
 import static sample.Main.objectInputStream;
 import static sample.Main.objectOutputStream;
 
-public class SignUp extends FatherController implements Initializable{
+public class SignUpController extends FatherController implements Initializable{
     @FXML
     TextField first_name;
     @FXML
@@ -34,8 +34,10 @@ public class SignUp extends FatherController implements Initializable{
     Label password_warn;
     @FXML
     Label email_warn;
-    String url="/image/icon/icons8-customer-50.png";
-    boolean edit=false;
+
+    String url = "/image/icon/icons8-customer-50.png";
+    boolean edit = false;
+
     public void imageChoose(){
         FileChooser fileChooser = new FileChooser();
         File selectedFile = fileChooser.showOpenDialog(null);
@@ -67,15 +69,17 @@ public class SignUp extends FatherController implements Initializable{
             return false;
         return (checkEmailValidity() && checkPasswordValidity() );
     }
+
     private boolean checkPasswordValidity() {
         return (password.getText()).equals(re_password.getText()) && (password.getText()).length() >= 5;
     }
+
     private boolean checkEmailValidity(){
         return (email.getText().matches("(.+)@(.+).com"));
     }
+
     public void signUp(){
         if (!checkAccountValidity()) {
-            System.out.println("no");
             return;
         }
         Thread send=new Thread(()->{
@@ -105,18 +109,14 @@ public class SignUp extends FatherController implements Initializable{
         loadMainScene();
     }
 
-    private void loadMainScene() {
-        super.loadPage("main_scene");
-    }
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        final String[] recieve = new String[1];
+        final String[] receive = new String[1];
         Thread send=new Thread(()->{
             try {
                 objectOutputStream.writeUTF("is edit");
                 objectOutputStream.flush();
-                recieve[0] =objectInputStream.readUTF();
+                receive[0] =objectInputStream.readUTF();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -127,16 +127,16 @@ public class SignUp extends FatherController implements Initializable{
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        if(recieve[0].startsWith("no"))
+        if(receive[0].startsWith("no"))
             return;
-        edit=true;
-        String[] info=recieve[0].split(" ");
+        edit = true;
+        String[] info=receive[0].split(" ");
         first_name.setText(info[1]);
         last_name.setText(info[2]);
         email.setText(info[3]);
-        try{
-                user_picture.setImage(new Image(info[4]));
-        }catch (Exception e){
+        try {
+            user_picture.setImage(new Image(info[4]));
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

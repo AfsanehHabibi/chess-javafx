@@ -1,22 +1,11 @@
-package sample;
+package sample.scene.controller;
 
 import java.io.IOException;
 
 import static sample.Main.objectOutputStream;
 
-public class MainScene extends FatherController{
-    public void requestGame(){
-        super.loadPage("request_game");
-    }
-    public void loadShowTournamentsScene() {
-        super.loadPage("show_tournaments");
-    }
-    public void loadGameHistoryScene(){
-        super.loadPage("show_game_result");
-    }
-    public void loadAboutScene(){
-        super.loadPage("about");
-    }
+public class MainSceneController extends FatherController {
+
     public void loadEdit() {
         Thread send=new Thread(()->{
             try {
@@ -33,6 +22,6 @@ public class MainScene extends FatherController{
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        super.loadPage("sign_up");
+        loadSignUpScene();
     }
 }

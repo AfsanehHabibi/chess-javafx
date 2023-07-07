@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="400.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/9.0.1" fx:controller="sample.ScoreBoard">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="400.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/9.0.1" fx:controller="sample.scene.controller.ScoreBoardController">
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" maxWidth="110.33331298828125" minWidth="10.0" prefWidth="88.33331298828125" />
       <ColumnConstraints hgrow="SOMETIMES" maxWidth="212.00002034505212" minWidth="10.0" prefWidth="212.00002034505212" />

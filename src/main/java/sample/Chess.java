@@ -17,7 +17,7 @@ public class Chess extends Thread {
     private ChessGameLogic gameLogic;
     private ChessboardIOController chessboardIOController;
 
-    Chess(Color color, GridPane gridPane) {
+    public Chess(Color color, GridPane gridPane) {
         this.color = color;
         this.gameLogic = new ChessGameLogic();
         this.chessboardIOController = new ChessboardIOController(gameLogic, gridPane, this);
@@ -71,13 +71,12 @@ public class Chess extends Thread {
         notation += chess_board[i_dest][j_dest].getName(j_dest);
         int temp = 8 - i_dest;
         notation += temp;
-        Controller.copy_notations.setText(Controller.copy_notations.getText() + " " + notation);
         try {
             objectOutputStream.writeUTF(notation);
             objectOutputStream.flush();
             objectOutputStream.writeObject(new Move(i_src, j_src, i_dest, j_dest));
             objectOutputStream.flush();
-            Controller.count = !Controller.count;
+            //Controller.count = !Controller.count;
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -93,5 +92,9 @@ public class Chess extends Thread {
 
     public void setClicks(ChessGameLogic gameLogic) {
         chessboardIOController.setClicks(color, checkLose(color), gameLogic);
+    }
+
+    public Color getColor() {
+        return color;
     }
 }

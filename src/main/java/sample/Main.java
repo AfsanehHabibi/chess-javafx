@@ -15,10 +15,10 @@ import java.net.Socket;
 
 public class Main extends Application {
 
-    static Stage stage;
+    public static Stage stage;
     static Thread t;
-    static ObjectOutputStream objectOutputStream;
-    static ObjectInputStream objectInputStream;
+    public static ObjectOutputStream objectOutputStream;
+    public static ObjectInputStream objectInputStream;
     @Override
     public void start(Stage primaryStage) throws Exception{
         Platform.setImplicitExit(false);

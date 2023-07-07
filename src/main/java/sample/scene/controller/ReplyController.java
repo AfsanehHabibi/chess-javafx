@@ -1,14 +1,13 @@
-package sample;
+package sample.scene.controller;
 
 import javafx.beans.property.SimpleStringProperty;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.GridPane;
+import sample.Chess;
 
 import java.io.IOException;
 import java.net.URL;
@@ -18,7 +17,7 @@ import java.util.ResourceBundle;
 import static sample.Main.objectInputStream;
 import static sample.Main.objectOutputStream;
 
-public class Reply extends FatherController implements Initializable {
+public class ReplyController extends FatherController implements Initializable {
     @FXML
     GridPane grid;
     @FXML
@@ -29,8 +28,7 @@ public class Reply extends FatherController implements Initializable {
     TableColumn<String, String> moves;
     Chess chess;
     GridPane temp_grid;
-    ArrayList<String> informations = new ArrayList<>();
-    ObservableList<String> data = FXCollections.observableArrayList(informations);
+    ArrayList<String> information = new ArrayList<>();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -40,7 +38,7 @@ public class Reply extends FatherController implements Initializable {
                 objectOutputStream.flush();
                 String receive = objectInputStream.readUTF();
                 while (!receive.equals("over")) {
-                    informations.add(receive);
+                    information.add(receive);
                     System.out.println(receive);
                     receive = objectInputStream.readUTF();
                 }
@@ -54,12 +52,8 @@ public class Reply extends FatherController implements Initializable {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        //notations.setEditable(true);
-        //for (String move:informations) {
-        //}
-        //moves.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.toString()));
         moves.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue()));
-        notations.getItems().addAll(informations);
+        notations.getItems().addAll(information);
         notations.setOnMouseClicked((E) -> {
             if (notations.getSelectionModel().getSelectedItem() != null) {
                 updateChessBoard(notations.getSelectionModel().getSelectedItem());
@@ -72,23 +66,18 @@ public class Reply extends FatherController implements Initializable {
         temp_grid = grid;
         grid.getChildren().clear();
         chess = new Chess(null, grid);
-        //Platform.runLater(    ()->    chess.start());
         chess.start();
         try {
             chess.join();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        int index = informations.indexOf(selectedItem);
+        int index = information.indexOf(selectedItem);
         for (int i = 0; i <= index; i++) {
-            final String finalLin = informations.get(i);
+            final String finalLin = information.get(i);
             chess.finalMove(
                     finalLin.charAt(0) - '0', finalLin.charAt(1) - '0',
                     finalLin.charAt(2) - '0', finalLin.charAt(3) - '0', false);
         }
-    }
-
-    public void loadMain() {
-        super.loadPage("main_scene");
     }
 }

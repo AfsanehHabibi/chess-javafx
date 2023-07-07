@@ -1,4 +1,4 @@
-package sample;
+package sample.scene.controller;
 
 import javafx.application.Platform;
 import javafx.concurrent.Task;
@@ -9,6 +9,9 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
+import sample.Chess;
+import sample.Clock;
+import sample.Color;
 import sample.game.logic.ChessGameLogic;
 
 import java.io.IOException;
@@ -18,7 +21,7 @@ import java.util.ResourceBundle;
 import static sample.Main.objectInputStream;
 import static sample.Main.objectOutputStream;
 
-public class Controller extends FatherController implements Initializable {
+public class GameController extends FatherController implements Initializable {
     static Label copy_notations;
     static Thread this_thread;
     static Thread thread_op;
@@ -164,7 +167,7 @@ public class Controller extends FatherController implements Initializable {
                                 }
                                 Platform.runLater(() -> {
                                     String add;
-                                    if (chess.color == Color.White) {
+                                    if (chess.getColor() == Color.White) {
                                         add = "0 1";
                                     } else
                                         add = "1 0";
@@ -180,7 +183,7 @@ public class Controller extends FatherController implements Initializable {
 
                                 Platform.runLater(() -> {
                                     String add;
-                                    if (chess.color == Color.White) {
+                                    if (chess.getColor() == Color.White) {
                                         add = "1 0";
                                     } else
                                         add = "0 1";
@@ -293,10 +296,6 @@ public class Controller extends FatherController implements Initializable {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-    }
-
-    public void loadMain() {
-        super.loadPage("main_scene");
     }
 
     public void askLose() {

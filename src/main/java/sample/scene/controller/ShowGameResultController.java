@@ -1,4 +1,4 @@
-package sample;
+package sample.scene.controller;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -15,10 +15,12 @@ import java.util.ResourceBundle;
 import static sample.Main.objectInputStream;
 import static sample.Main.objectOutputStream;
 
-public class ShowGameResult extends FatherController implements Initializable {
-    ArrayList<String> games_info = new ArrayList<>();
+public class ShowGameResultController extends FatherController implements Initializable {
+
     @FXML
     VBox game_list;
+
+    ArrayList<String> games_info = new ArrayList<>();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -44,7 +46,6 @@ public class ShowGameResult extends FatherController implements Initializable {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        System.out.println(games_info);
         for (String aGames_info : games_info) {
             String[] strings = aGames_info.split(" ");
             HBox temp = new HBox();
@@ -54,10 +55,10 @@ public class ShowGameResult extends FatherController implements Initializable {
                     ));
             temp.setOnMouseClicked((E)->{
                 Thread data_send=new Thread(()->{
-                   try{
+                   try {
                        objectOutputStream.writeUTF("reply of game "+'0');
                        objectOutputStream.flush();
-                   }catch (IOException e){
+                   } catch (IOException e) {
                        e.printStackTrace();
                    }
                 });
@@ -71,12 +72,5 @@ public class ShowGameResult extends FatherController implements Initializable {
             });
             game_list.getChildren().add(temp);
         }
-    }
-
-    public void loadMain() {
-        super.loadPage("main_scene");
-    }
-    private void loadReplyScene() {
-        super.loadPage("reply");
     }
 }

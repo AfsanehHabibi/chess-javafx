@@ -3,7 +3,7 @@
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Login">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.scene.controller.LoginController">
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" maxWidth="192.0" minWidth="10.0" prefWidth="48.0" />
       <ColumnConstraints hgrow="SOMETIMES" maxWidth="431.0" minWidth="10.0" prefWidth="430.0" />
@@ -40,7 +40,7 @@
                   <Insets bottom="25.0" left="150.0" right="100.0" />
                </VBox.margin>
             </Button>
-            <Button fx:id="sign_up_button" mnemonicParsing="false" onMouseClicked="#loadSignUpPage" prefHeight="25.0" prefWidth="138.0" text="Sinup">
+            <Button fx:id="sign_up_button" mnemonicParsing="false" onMouseClicked="#loadSignUpScene" prefHeight="25.0" prefWidth="138.0" text="Sinup">
                <VBox.margin>
                   <Insets left="150.0" />
                </VBox.margin></Button>

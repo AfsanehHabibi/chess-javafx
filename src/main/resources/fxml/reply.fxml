@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane prefHeight="600.0" prefWidth="600.0" stylesheets="/css/css.css" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Reply">
+<GridPane prefHeight="600.0" prefWidth="600.0" stylesheets="/css/css.css" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.scene.controller.ReplyController">
   <columnConstraints>
       <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
     <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="300.0" />
@@ -46,7 +46,7 @@
       </GridPane>
       <ButtonBar prefHeight="40.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
         <buttons>
-            <Button id="Main" fx:id="main_button" layoutX="215.0" layoutY="47.0" mnemonicParsing="false" onMouseClicked="#loadMain" text="Main" visible="false" />
+            <Button id="Main" fx:id="main_button" layoutX="215.0" layoutY="47.0" mnemonicParsing="false" onMouseClicked="#loadMainScene" text="Main" visible="false" />
         </buttons>
          <padding>
             <Insets right="60.0" />

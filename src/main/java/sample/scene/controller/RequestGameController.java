@@ -1,4 +1,4 @@
-package sample;
+package sample.scene.controller;
 
 import javafx.application.Platform;
 import javafx.concurrent.Task;
@@ -7,6 +7,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import sample.Game;
 
 import java.io.IOException;
 import java.net.URL;
@@ -17,7 +18,7 @@ import java.util.Vector;
 import static sample.Main.objectInputStream;
 import static sample.Main.objectOutputStream;
 
-public class RequestGame extends FatherController implements Initializable {
+public class RequestGameController extends FatherController implements Initializable {
     @FXML
     VBox game_list;
     ArrayList<String> gameRequests =new ArrayList<>();
@@ -35,10 +36,10 @@ public class RequestGame extends FatherController implements Initializable {
                             if (objectInputStream.available() != 0) {
                                 String re = objectInputStream.readUTF();
                                 if (re.startsWith("game start") ) {
-                                    Platform.runLater(this::loadGameBoard);
+                                    Platform.runLater(this::loadGameBoardScene);
                                     break;
                                 } else if (re.startsWith("watch")){
-                                    Platform.runLater(this::loadWatchBoard);
+                                    Platform.runLater(this::loadWatchBoardScene);
                                     break;
                                 }
                             }
@@ -58,10 +59,6 @@ public class RequestGame extends FatherController implements Initializable {
             );
             waitForGame.start();
         }
-    }
-
-    private void loadGameBoard() {
-        super.loadPage("sample");
     }
 
     public void refresh(){
@@ -151,11 +148,5 @@ public class RequestGame extends FatherController implements Initializable {
             });
             game_list.getChildren().add(temp);
         }
-    }
-    public void loadSeekGame(){
-        super.loadPage("seek_game");
-    }
-    public void loadWatchBoard(){
-        super.loadPage("watch_board");
     }
 }

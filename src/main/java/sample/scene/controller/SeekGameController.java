@@ -1,10 +1,7 @@
-package sample;
+package sample.scene.controller;
 
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.RadioButton;
@@ -15,7 +12,7 @@ import java.util.ResourceBundle;
 
 import static sample.Main.*;
 
-public class SeekGame extends FatherController implements Initializable{
+public class SeekGameController extends FatherController implements Initializable{
     @FXML
     RadioButton auto_color;
     @FXML
@@ -28,6 +25,7 @@ public class SeekGame extends FatherController implements Initializable{
     CheckBox isRated;
     @FXML
     CheckBox isTimed;
+
     public void sendRequest(){
         Thread send=new Thread(()->{
             try {
@@ -38,7 +36,6 @@ public class SeekGame extends FatherController implements Initializable{
                                 (auto_color.isSelected()?"Auto ":"")+
                                 time.getValue()
                         );
-                System.out.println(time.getValue());
                 objectOutputStream.flush();
             } catch (IOException e) {
                 e.printStackTrace();
@@ -51,10 +48,6 @@ public class SeekGame extends FatherController implements Initializable{
             e.printStackTrace();
         }
         loadRequestGameScene();
-    }
-
-    public void loadRequestGameScene() {
-        super.loadPage("request_game");
     }
 
     @Override
