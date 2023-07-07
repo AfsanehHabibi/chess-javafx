@@ -307,8 +307,8 @@ public class ClientHandler implements Runnable {
     private void editUserInfo(String receive) {
         String[] strings = receive.split(" ");
         try {
-            login_player.setFirst_name(strings[2]);
-            login_player.setLast_name(strings[3]);
+            login_player.setFirstName(strings[2]);
+            login_player.setLastName(strings[3]);
             login_player.setPassword(strings[4]);
             login_player.setEmail(strings[5]);
             login_player.setUrl(strings[6]);
@@ -476,8 +476,8 @@ public class ClientHandler implements Runnable {
         //??? what does this mean
         String line = objectInputStream.readUTF();
         if (line.equals("is edit")) {
-            objectOutputStream.writeUTF("yes " + login_player.getFirst_name() + " " +
-                    login_player.getLast_name() + " " +
+            objectOutputStream.writeUTF("yes " + login_player.getFirstName() + " " +
+                    login_player.getLastName() + " " +
                     login_player.email + " "
                     + login_player.url
             );

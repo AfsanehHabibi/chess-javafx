@@ -44,8 +44,8 @@ public class TournamentGame {
     @Override
     public String toString() {
         return "TournamentGame{" +
-                "white=" + whitePlayer.getFirst_name() +
-                ", black=" + blackPlayer.getFirst_name() +
+                "white=" + whitePlayer.getFirstName() +
+                ", black=" + blackPlayer.getFirstName() +
                 '}';
     }
 

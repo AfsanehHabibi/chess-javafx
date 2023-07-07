@@ -5,29 +5,29 @@ import java.util.ArrayList;
 import java.util.Vector;
 
 public class User implements Serializable{
-    String first_name;
-    String last_name;
+    String firstName;
+    String lastName;
     String username;
     String password;
     String email;
     String url;
-    long rating=1200;
-    int number_of_lose=0;
-    int number_of_win=0;
-    int number_of_games=0;
+    long rating = 1200;
+    int numberOfLose = 0;
+    int numberOfWin = 0;
+    int numberOfGames = 0;
     ArrayList<Game> games;
 
-    public void setFirst_name(String first_name) {
-        this.first_name = first_name;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
     public String getPassword() {
         return password;
     }
 
-    public User(String first_name, String last_name, String password, String email, String username, String url){
-        this.first_name=first_name;
-        this.last_name=last_name;
+    public User(String firstName, String lastName, String password, String email, String username, String url){
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.password=password;
         this.email=email;
         this.username=username;
@@ -44,18 +44,19 @@ public class User implements Serializable{
         }
         return temp;
     }
+
     public static void calculateRatings(boolean draw, User winner, User loser){
-            winner.number_of_games++;
-            loser.number_of_games++;
+            winner.numberOfGames++;
+            loser.numberOfGames++;
         if(!draw){
-            winner.number_of_win++;
-            loser.number_of_lose++;
+            winner.numberOfWin++;
+            loser.numberOfLose++;
         }
         long temp=winner.rating;
-        winner.rating+=getK(winner.number_of_games,winner.rating)*(winner.number_of_win-winner.number_of_lose+((
+        winner.rating+=getK(winner.numberOfGames,winner.rating)*(winner.numberOfWin -winner.numberOfLose +((
                 loser.rating-winner.rating
                 )/400));
-        loser.rating+=getK(loser.number_of_games,loser.rating)*(loser.number_of_win-loser.number_of_lose+((
+        loser.rating+=getK(loser.numberOfGames,loser.rating)*(loser.numberOfWin -loser.numberOfLose +((
                 temp-loser.rating
                 )/400));
     }
@@ -69,6 +70,7 @@ public class User implements Serializable{
             return 20;
         }
     }
+
     private static boolean isUserNameAvailable(String user_name, Vector<User> players){
         for (User player : players) {
             if (player.getUsername().equals(user_name))
@@ -81,21 +83,20 @@ public class User implements Serializable{
         this.password = password;
     }
 
-    public void setLast_name(String last_name) {
-        this.last_name = last_name;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
-
-
 
     public void addGame(Game game){
         games.add(game);
     }
-    public String getFirst_name() {
-        return first_name;
+
+    public String getFirstName() {
+        return firstName;
     }
 
-    public String getLast_name() {
-        return last_name;
+    public String getLastName() {
+        return lastName;
     }
 
     public String getUsername() {
@@ -109,8 +110,8 @@ public class User implements Serializable{
     @Override
     public String toString() {
         return "Player{" +
-                "first_name='" + first_name + '\'' +
-                ", last_name='" + last_name + '\'' +
+                "first_name='" + firstName + '\'' +
+                ", last_name='" + lastName + '\'' +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
