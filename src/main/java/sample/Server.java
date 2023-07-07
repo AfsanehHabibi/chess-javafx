@@ -1,5 +1,9 @@
 package sample;
 
+import sample.tournament.RoundRobinTournament;
+import sample.tournament.Tournament;
+import sample.tournament.TournamentGame;
+
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -74,7 +78,7 @@ public class Server  {
     public static void prepareTournamentGame(ClientHandler client, TournamentGame game){
         client.isPlaying=true;
         client.in_tournament=true;
-        client.opponent=Server.findPlayer(game.white);
+        client.opponent=Server.findPlayer(game.getWhitePlayer());
         client.opponent.opponent=client;
         client.opponent.in_tournament=true;
         client.tournamentGame=game;

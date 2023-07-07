@@ -1,5 +1,7 @@
 package sample;
 
+import sample.tournament.TournamentGame;
+
 import java.util.ArrayList;
 
 public class Game {
@@ -20,9 +22,9 @@ public class Game {
 
     public Game(TournamentGame game, Color black, User opponent) {
         color=black;
-        this.isRated = game.isRated;
+        this.isRated = game.getIsRated();
         this.withClock = true;
-        this.clock =game.clock;
+        this.clock =game.getClock();
         this.opponent=opponent;
 
     }

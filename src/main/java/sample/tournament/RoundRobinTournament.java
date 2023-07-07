@@ -1,4 +1,6 @@
-package sample;
+package sample.tournament;
+
+import sample.User;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -6,13 +8,15 @@ import java.util.Date;
 import java.util.LinkedList;
 
 public class RoundRobinTournament extends Tournament {
+
     public RoundRobinTournament(String name, long min_rating, boolean isRated, String clock, int id, int size, Date date_start) {
         super(name, min_rating, isRated, clock, id, size, date_start);
         results=new TournamentGame[size-1][size/2];
     }
+
     @Override
     protected void startThread(){
-        tour_tread=new Thread(()->{
+        tourTread =new Thread(()->{
             synchronized (this){
                 try {
                     DateFormat format=new SimpleDateFormat("MMM dd,yyyy HH:mm");
@@ -38,9 +42,8 @@ public class RoundRobinTournament extends Tournament {
                 takeBreak();
             }
         });
-        tour_tread.start();
+        tourTread.start();
     }
-
 
     private void draw() {
         for (int i = 0; i <size-1 ; i++) {

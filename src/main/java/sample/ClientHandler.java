@@ -2,6 +2,9 @@ package sample;
 
 import sample.game.logic.ChessGameLogic;
 import sample.game.model.Move;
+import sample.tournament.Tournament;
+import sample.tournament.TournamentGame;
+import sample.tournament.TournamentState;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -315,15 +318,15 @@ public class ClientHandler implements Runnable {
     }
 
     private void tournamentsInformation() throws IOException {
-        for (Tournament value : tournaments) {
+        for (Tournament tournament : tournaments) {
             String temp;
-            if (value.tournamentState != TournamentState.Joining)
+            if (tournament.getTournamentState() != TournamentState.Joining)
                 temp = "Tournament closed";
-            else if (value.players.contains(login_player))
+            else if (tournament.isInTournament(login_player))
                 temp = "Leave";
             else
                 temp = "Join";
-            objectOutputStream.writeUTF(value + " " + temp);
+            objectOutputStream.writeUTF(tournament + " " + temp);
             objectOutputStream.flush();
         }
         objectOutputStream.writeUTF("over");
@@ -454,14 +457,13 @@ public class ClientHandler implements Runnable {
                 objectOutputStream.flush();
             }
         } else if (strings[4].equals("Tournament")) {
-            if (tournaments.get(Integer.parseInt(strings[3])).players.contains(login_player)) {
+            if (tournaments.get(Integer.parseInt(strings[3])).isInTournament(login_player)) {
                 objectOutputStream.writeUTF("load score board");
                 tournament = tournaments.get(Integer.parseInt(strings[3]));
-                objectOutputStream.flush();
             } else {
                 objectOutputStream.writeUTF("accesses  denied");
-                objectOutputStream.flush();
             }
+            objectOutputStream.flush();
         }
     }
 

@@ -1,4 +1,4 @@
-package sample;
+package sample.tournament;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -13,7 +13,7 @@ public class SwissTournament extends Tournament{
     }
     @Override
     protected void startThread(){
-        tour_tread=new Thread(()->{
+        tourTread =new Thread(()->{
             synchronized (this){
                 try {
                     DateFormat format=new SimpleDateFormat("MMM dd,yyyy HH:mm");
@@ -42,7 +42,7 @@ public class SwissTournament extends Tournament{
                 System.out.println("games done");
             }
         });
-        tour_tread.start();
+        tourTread.start();
     }
 
     public void setRound(int round){
@@ -55,7 +55,7 @@ public class SwissTournament extends Tournament{
             }
         }
         else {
-
+            //TODO()
         }
     }
 }
