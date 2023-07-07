@@ -1,4 +1,6 @@
-package sample;
+package sample.user;
+
+import sample.Game;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -35,7 +37,7 @@ public class User implements Serializable{
         games=new ArrayList<>();
     }
 
-    static String makeUserName(Vector<User> users, String first_name, String last_name){
+    public static String makeUserName(Vector<User> users, String first_name, String last_name){
         String temp=first_name.charAt(0)+"."+last_name;
         int counter=1;
         while (!isUserNameAvailable(temp,users)) {
@@ -46,8 +48,8 @@ public class User implements Serializable{
     }
 
     public static void calculateRatings(boolean draw, User winner, User loser){
-            winner.numberOfGames++;
-            loser.numberOfGames++;
+        winner.numberOfGames++;
+        loser.numberOfGames++;
         if(!draw){
             winner.numberOfWin++;
             loser.numberOfLose++;
@@ -60,6 +62,7 @@ public class User implements Serializable{
                 temp-loser.rating
                 )/400));
     }
+
     private static int getK(int games, long rating){
         if(games<30){
             return 30;
@@ -107,6 +110,18 @@ public class User implements Serializable{
         return rating;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public ArrayList<Game> getGames() {
+        return games;
+    }
+
     @Override
     public String toString() {
         return "Player{" +
@@ -125,5 +140,13 @@ public class User implements Serializable{
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof User)) return false;
+        User user = (User) o;
+        return username.equals(user.username);
     }
 }

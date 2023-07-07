@@ -1,9 +1,11 @@
 package sample;
 
+import sample.user.User;
+
 import java.io.Serializable;
 
 public class GameRequestInformation implements Serializable{
-    User seek_player;
+    User seekerPlayer;
     int client_id;
     boolean rated;
     boolean isTime;
@@ -11,13 +13,13 @@ public class GameRequestInformation implements Serializable{
     Clock clock;
     int player_code;
 
-    public User getSeek_player() {
-        return seek_player;
+    public User getSeekerPlayer() {
+        return seekerPlayer;
     }
 
     public GameRequestInformation(User seek_player, int client_id, boolean rated, boolean isTime, Color color,
                                   int player_code, String time) {
-        this.seek_player = seek_player;
+        this.seekerPlayer = seek_player;
         this.client_id = client_id;
         this.rated = rated;
         this.isTime = isTime;
@@ -32,13 +34,37 @@ public class GameRequestInformation implements Serializable{
     @Override
     public String toString() {
         return "GameRequestInformation{" +
-                " seek_player= " + seek_player.username +
-                " seek_player_rating= " + seek_player.rating +
+                " seek_player= " + seekerPlayer.getUsername() +
+                " seek_player_rating= " + seekerPlayer.getRating() +
                 " ,client_id= " + client_id +
                 " ,rated= " + rated +
                 " ,color= " + color +
                 " ,player_code= "+player_code+
                 " "+(clock==null ? "no clock":clock.toString())+
                 " }";
+    }
+
+    public int getClient_id() {
+        return client_id;
+    }
+
+    public boolean isRated() {
+        return rated;
+    }
+
+    public boolean isTime() {
+        return isTime;
+    }
+
+    public Color getColor() {
+        return color;
+    }
+
+    public Clock getClock() {
+        return clock;
+    }
+
+    public int getPlayer_code() {
+        return player_code;
     }
 }

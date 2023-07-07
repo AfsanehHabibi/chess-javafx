@@ -1,6 +1,6 @@
 package sample.tournament;
 
-import sample.User;
+import sample.user.User;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;

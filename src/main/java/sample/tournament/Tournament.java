@@ -1,8 +1,8 @@
 package sample.tournament;
 
 import sample.Clock;
-import sample.Server;
-import sample.User;
+import sample.server.Server;
+import sample.user.User;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;

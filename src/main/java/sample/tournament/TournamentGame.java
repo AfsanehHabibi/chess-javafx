@@ -1,7 +1,7 @@
 package sample.tournament;
 
 import sample.Clock;
-import sample.User;
+import sample.user.User;
 
 public class TournamentGame {
     User whitePlayer;
