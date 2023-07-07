@@ -9,6 +9,7 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
+import sample.game.logic.ChessGameLogic;
 
 import java.io.IOException;
 import java.net.URL;
@@ -22,7 +23,6 @@ public class Controller extends FatherController implements Initializable {
     static Thread this_thread;
     static Thread thread_op;
     Chess chess;
-    GridPane temp_grid;
     static boolean count = true;
     static Clock game_clock;
     static Clock op_game_clock;
@@ -57,9 +57,6 @@ public class Controller extends FatherController implements Initializable {
         Task time;
         Task time_2;
         final Color[] first_color = new Color[1];
-        boolean fal = false;
-        final Integer[] seconds = new Integer[1];
-        seconds[0] = 0;
         chatReciever.getItems().add("opponent");
         chatReciever.getItems().add("group");
         chatReciever.setValue("opponent");
@@ -192,7 +189,6 @@ public class Controller extends FatherController implements Initializable {
                                 break;
                             } else if (line.equals("want a draw")) {
                                 Platform.runLater(() -> draw.setText("opponent\nasked"));
-                                continue;
                             } else if (line.equals("finish draw")) {
                                 main_button.setVisible(true);
                                 if (istime) {
@@ -203,33 +199,27 @@ public class Controller extends FatherController implements Initializable {
                                 break;
                             } else if (line.startsWith("chat op")) {
                                 Platform.runLater(() -> chat.setText(chat.getText() + "\n" + line.substring(7)));
-                                continue;
+                            } else if (line.startsWith("new move")) {
+                                ChessGameLogic gameLogic = (ChessGameLogic) objectInputStream.readObject();
+                                String notation = objectInputStream.readUTF();
+                                Platform.runLater(() -> {
+                                            notations.setText(notations.getText() + " " + notation);
+                                            chess.update(gameLogic);
+                                });
+                            }else if (line.startsWith("allow to move")) {
+                                ChessGameLogic gameLogic = (ChessGameLogic) objectInputStream.readObject();
+                                Platform.runLater(() -> chess.setClicks(gameLogic));
                             }
-                            Color color = (Color) objectInputStream.readObject();
-                            Controller.count = !Controller.count;
-                            System.out.println(line.charAt(0) - '0');
-                            Platform.runLater(() -> {
-                                chess.finalMove(
-                                        line.charAt(0) - '0', line.charAt(1) - '0',
-                                        line.charAt(2) - '0', line.charAt(3) - '0', false
-                                );
-                                notations.setText(notations.getText() + " " + line.substring(5));
-                                chess.setClicks(color);
-                                System.out.println(color);
-                            });
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                    if (fal)
-                        break;
                 }
                 return null;
             }
         };
         Thread t = new Thread(task);
         t.start();
-        temp_grid = grid;
         chess = new Chess(first_color[0], grid);
         chess.start();
         try {
@@ -237,11 +227,6 @@ public class Controller extends FatherController implements Initializable {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        /*for (int i = 0; i < 8; i++) {
-            for (int j = 0; j < 8; j++) {
-                grid.add(chess.chessboard[i][j].borderPane, j, i);
-            }
-        }*/
     }
 
     public void closeChat() {

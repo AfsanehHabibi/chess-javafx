@@ -27,4 +27,9 @@ public class Empty extends ChessManClass {
     public Color getColor() {
         return null;
     }
+
+    @Override
+    public char getCharName() {
+        return 'E';
+    }
 }

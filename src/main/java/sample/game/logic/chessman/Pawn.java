@@ -46,4 +46,9 @@ public class Pawn extends ChessManClass {
     public void setEnPassent(boolean enPassent) {
         this.enPassent = enPassent;
     }
+
+    @Override
+    public char getCharName() {
+        return 'P';
+    }
 }

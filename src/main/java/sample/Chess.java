@@ -4,7 +4,7 @@ import javafx.scene.layout.GridPane;
 import sample.game.logic.ChessGameLogic;
 import sample.game.logic.chessman.ChessManClass;
 import sample.game.logic.chessman.Empty;
-import sample.game.logic.exception.BoardWrongSizeException;
+import sample.game.model.Move;
 import sample.game.view.ChessboardIOController;
 
 import java.io.IOException;
@@ -14,21 +14,17 @@ import static sample.Main.objectOutputStream;
 
 public class Chess extends Thread {
     Color color;
-    private GridPane gridPane;
     private ChessGameLogic gameLogic;
     private ChessboardIOController chessboardIOController;
 
     Chess(Color color, GridPane gridPane) {
         this.color = color;
-        this.gridPane = gridPane;
         this.gameLogic = new ChessGameLogic();
         this.chessboardIOController = new ChessboardIOController(gameLogic, gridPane, this);
     }
 
     @Override
     public void run() {
-        //Platform.runLater(this::setBoard);
-        gameLogic.setBoard();
         chessboardIOController.drawChessboard(gameLogic.getChessboard());
         try {
             chessboardIOController.setCells();
@@ -64,8 +60,6 @@ public class Chess extends Thread {
         if (gameLogic.getChessboard()[i_src][j_src] instanceof Empty)
             return;
         boolean x = !(gameLogic.getChessboard()[i_dest][j_dest] instanceof Empty);
-        gameLogic.move(i_src, j_src, i_dest, j_dest);
-        chessboardIOController.updateChessboard(i_src, j_src, i_dest, j_dest, gridPane, gameLogic.getChessboard());
         if (send_data) {
             sendData(i_src, j_src, i_dest, j_dest, gameLogic.getChessboard(), x);
             chessboardIOController.turnOffClicks();
@@ -78,21 +72,29 @@ public class Chess extends Thread {
         if (isCaptured)
             notation += 'x';
         notation += chess_board[i_dest][j_dest].getName(j_dest);
-        System.out.println(chess_board[i_dest][j_dest].getName(j_dest));
         int temp = 8 - i_dest;
         notation += temp;
         Controller.copy_notations.setText(Controller.copy_notations.getText() + " " + notation);
         try {
-            objectOutputStream.writeUTF(i_src + "" + j_src + "" + i_dest + "" + j_dest + "@" + notation);
+            objectOutputStream.writeUTF(notation);
+            objectOutputStream.flush();
+            objectOutputStream.writeObject(new Move(i_src, j_src, i_dest, j_dest));
             objectOutputStream.flush();
             Controller.count = !Controller.count;
-            System.out.println("send " + i_src + j_src + i_dest + j_dest + "");
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public void setClicks(Color color) {
-        chessboardIOController.setClicks(color, checkLose(color));
+    public void update(ChessGameLogic gameLogic) {
+        chessboardIOController.clearBoard();
+        chessboardIOController.drawChessboard(gameLogic.getChessboard());
+        try {
+            chessboardIOController.setCells();
+        } catch (IllegalStateException ignored) {}
+    }
+
+    public void setClicks(ChessGameLogic gameLogic) {
+        chessboardIOController.setClicks(color, checkLose(color), gameLogic);
     }
 }

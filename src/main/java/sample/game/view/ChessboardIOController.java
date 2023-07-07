@@ -9,9 +9,9 @@ import sample.game.view.chessman.*;
 
 public class ChessboardIOController {
     private ChessGameLogic gameLogic;
-    private GridPane gridPane;
-    private Chess chess;
-    private ChessManView[][] chessManViews;
+    private final GridPane gridPane;
+    private final Chess chess;
+    private final ChessManView[][] chessManViews;
 
     public ChessboardIOController(ChessGameLogic gameLogic, GridPane gridPane, Chess chess) {
         this.gameLogic = gameLogic;
@@ -26,14 +26,6 @@ public class ChessboardIOController {
                 chessManViews[i][j] = viewBuilder(chessboard[i][j]);
             }
         }
-    }
-
-    public void updateChessboard(int i_src, int j_src, int i_dest, int j_dest, GridPane gridPane, ChessManClass[][] chess_board) {
-        gridPane.getChildren().remove(chessManViews[i_dest][j_dest].borderPane);
-        gridPane.getChildren().remove(chessManViews[i_src][j_src].borderPane);
-        drawChessboard(chess_board);
-        gridPane.add(chessManViews[i_src][j_src].borderPane, j_src, i_src);
-        gridPane.add(chessManViews[i_dest][j_dest].borderPane, j_dest, i_dest);
     }
 
     public void setClicks(Color playerTurnColor, boolean lose) {
@@ -54,31 +46,31 @@ public class ChessboardIOController {
     }
 
     public void setOnMouseClick(int i, int j) {
-        int finalJ = j;
-        int finalI = i;
         chessManViews[i][j].borderPane.setOnMouseClicked((event) -> {
+            turnBoardBorderOff();
             for (int k = 0; k < 8; k++) {
                 for (int l = 0; l < 8; l++) {
-                    turnOffBorder(chessManViews[k][l].borderPane);
-                }
-            }
-            for (int k = 0; k < 8; k++) {
-                for (int l = 0; l < 8; l++) {
-                    if (gameLogic.canMove(finalI, finalJ, k, l)) {
-                        chessManViews[k][l].borderPane.setStyle(
-                                " -fx-border-color: black ;-fx-border-width: 4;-fx-border-style: solid;");
-                        System.out.println(finalI + " " + finalJ + " " + k + " " + l);
+                    if (gameLogic.canMove(i, j, k, l)) {
+                        turnOnBorder(chessManViews[k][l].borderPane);
                         int finalL = l;
                         int finalK = k;
-                        chessManViews[k][l].borderPane.setOnMouseClicked((event1) -> {
-                            System.out.println("second");
-                            //chessboard[finalI][finalJ].
-                            chess.finalMove(finalI, finalJ, finalK, finalL, true);
-                        });
+                        chessManViews[k][l].borderPane.setOnMouseClicked((event1) -> chess.finalMove(i, j, finalK, finalL, true));
                     }
                 }
             }
         });
+    }
+
+    private void turnBoardBorderOff() {
+        for (int k = 0; k < 8; k++) {
+            for (int l = 0; l < 8; l++) {
+                turnOffBorder(chessManViews[k][l].borderPane);
+            }
+        }
+    }
+
+    private void turnOnBorder(BorderPane borderPane) {
+        borderPane.setStyle(" -fx-border-color: black ;-fx-border-width: 4;-fx-border-style: solid;");
     }
 
     private void turnOffBorder(BorderPane borderPane) {
@@ -117,5 +109,14 @@ public class ChessboardIOController {
         if (chessMan instanceof Knight)
             return new KnightView(chessMan.getColor());
         return null;
+    }
+
+    public void setClicks(Color color, boolean checkLose, ChessGameLogic gameLogic) {
+        this.gameLogic = gameLogic;
+        setClicks(color, checkLose);
+    }
+
+    public void clearBoard() {
+        gridPane.getChildren().removeAll(gridPane.getChildren());
     }
 }

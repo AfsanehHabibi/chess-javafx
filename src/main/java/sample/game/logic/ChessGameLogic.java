@@ -2,29 +2,37 @@ package sample.game.logic;
 
 import sample.*;
 import sample.game.logic.chessman.*;
-import sample.game.logic.exception.BoardWrongSizeException;
+import sample.game.logic.exception.InvalidBoardException;
 
-public class ChessGameLogic {
+import java.io.*;
+import java.util.Arrays;
 
-    private ChessManClass[][] chessboard;
+public class ChessGameLogic implements Serializable {
 
-    public ChessGameLogic(ChessManClass[][] chessboard) throws BoardWrongSizeException {
+    @Serial
+    private static final long serialVersionUID = 1L;
+    private final ChessManClass[][] chessboard;
+
+    public ChessGameLogic(ChessManClass[][] chessboard) throws InvalidBoardException {
         if (chessboard == null)
-            throw new BoardWrongSizeException();
+            throw new InvalidBoardException();
         if (chessboard.length != 8)
-            throw new BoardWrongSizeException();
+            throw new InvalidBoardException();
         for (int i = 0; i < 8; i++) {
             if (chessboard[i] == null || chessboard[i].length != 8)
-                throw new BoardWrongSizeException();
+                throw new InvalidBoardException();
         }
+        if (!isBoardValid(chessboard))
+            throw new InvalidBoardException();
         this.chessboard = chessboard;
     }
 
     public ChessGameLogic() {
         this.chessboard = new ChessManClass[8][8];
+        resetBoard();
     }
 
-    public void setBoard() {
+    public void resetBoard() {
         for (int i = 0; i < 8; i++) {
             chessboard[6][i] = new Pawn(Color.White);
         }
@@ -92,7 +100,7 @@ public class ChessGameLogic {
         }
         try {
             return new ChessGameLogic(copy);
-        } catch (BoardWrongSizeException e) {
+        } catch (InvalidBoardException e) {
             throw new RuntimeException();
         }
     }
@@ -109,6 +117,7 @@ public class ChessGameLogic {
                 Pawn pawn = new Pawn(chessboard[i_src][j_src].getColor());
                 pawn.setEnPassent((i_src == 7 && i_dest == 5) || (i_src == 1 && i_dest == 3));
                 chessboard[i_dest][j_dest] = pawn;
+                chessboard[i_src][j_src] = new Empty();
             }
         } else {
             chessboard[i_dest][j_dest] = chessboard[i_src][j_src].clone();
@@ -118,5 +127,40 @@ public class ChessGameLogic {
 
     public boolean canMove(int i_src, int j_src, int i_dest, int j_dest) {
         return chessboard[i_src][j_src].canMove(i_src, j_src, i_dest, j_dest, this);
+    }
+
+    public boolean isBoardValid(ChessManClass[][] chessboard) {
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                if (chessboard[i][j] == null)
+                    return false;
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "chessboard:\n" + boardToString();
+
+    }
+
+    private String boardToString() {
+        StringBuilder result = new StringBuilder();
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                result.append(chessboard[i][j].toString());
+            }
+            result.append("\n");
+        }
+        return result.toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ChessGameLogic)) return false;
+        ChessGameLogic gameLogic = (ChessGameLogic) o;
+        return Arrays.deepEquals(chessboard, gameLogic.chessboard);
     }
 }

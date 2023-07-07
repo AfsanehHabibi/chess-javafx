@@ -4,7 +4,9 @@ package sample.game.logic.chessman;
 import sample.Color;
 import sample.game.logic.ChessGameLogic;
 
-public abstract class ChessManClass {
+import java.io.Serializable;
+
+public abstract class ChessManClass implements Serializable {
     Color color;
 
     abstract boolean canMoveNormal(int i_src, int j_src, int i_dest, int j_dest, ChessGameLogic game);
@@ -74,4 +76,30 @@ public abstract class ChessManClass {
     }
 
     public abstract char getChessPieceName();
+
+    public char getColorChar() {
+        if (color == null)
+            return 'N';
+        return switch (color) {
+            case White -> 'W';
+            case Black -> 'B';
+        };
+    }
+
+    @Override
+    public String toString() {
+        return "" + getCharName() + "" + getColorChar();
+    }
+
+    public char getCharName() {
+        return getChessPieceName();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ChessManClass)) return false;
+        ChessManClass that = (ChessManClass) o;
+        return color == that.color && getChessPieceName() == that.getChessPieceName();
+    }
 }
