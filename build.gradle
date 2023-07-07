@@ -31,7 +31,7 @@ javafx {
 mainClassName = 'sample.Main'
 
 task runServerClass(type: JavaExec) {
-    main = 'sample.Server' // Specify the fully qualified name of your main class here
+    main = 'sample.server.Server' // Specify the fully qualified name of your main class here
     classpath = sourceSets.main.runtimeClasspath
 }
 
