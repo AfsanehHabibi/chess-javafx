@@ -109,9 +109,14 @@ public class Chess extends Thread {
     }
 
     public void updateBoardAndNotation(ArrayList<GameMoveRecord> moves) {
-        moveRecords.addAll(moves);
-        update(moves.get(moves.size()-1).getAfterBoard());
-        notationBoardIOController.addAll(getNotations(moves));
+        if (moves.size() != 0) {
+            moveRecords.addAll(moves);
+            update(moves.get(moves.size() - 1).getAfterBoard());
+            notationBoardIOController.addAll(getNotations(moves));
+        } else {
+            // a newly created board
+            update(new ChessGameLogic());
+        }
     }
 
     private List<String> getNotations(List<GameMoveRecord> moves) {
