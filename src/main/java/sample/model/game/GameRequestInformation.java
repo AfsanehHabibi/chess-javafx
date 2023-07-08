@@ -1,5 +1,7 @@
-package sample;
+package sample.model.game;
 
+import sample.model.util.Clock;
+import sample.model.util.Color;
 import sample.user.User;
 
 import java.io.Serializable;

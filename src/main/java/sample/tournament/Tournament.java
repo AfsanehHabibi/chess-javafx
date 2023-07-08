@@ -1,6 +1,6 @@
 package sample.tournament;
 
-import sample.Clock;
+import sample.model.util.Clock;
 import sample.server.Server;
 import sample.user.User;
 

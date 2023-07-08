@@ -6,6 +6,7 @@ import sample.*;
 import sample.game.logic.ChessGameLogic;
 import sample.game.logic.chessman.*;
 import sample.game.view.chessman.*;
+import sample.model.util.Color;
 
 public class ChessboardIOController {
     private ChessGameLogic gameLogic;

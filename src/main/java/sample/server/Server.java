@@ -1,8 +1,7 @@
 package sample.server;
 
-import sample.Color;
-import sample.Game;
-import sample.GameRequestInformation;
+import sample.model.game.Game;
+import sample.model.game.GameRequestInformation;
 import sample.user.User;
 import sample.tournament.RoundRobinTournament;
 import sample.tournament.Tournament;

@@ -2,7 +2,7 @@ package sample.game.view.chessman;
 
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
-import sample.Color;
+import sample.model.util.Color;
 
 public class EmptyView extends ChessManView {
     public EmptyView(Color color) {

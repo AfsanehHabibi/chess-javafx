@@ -1,7 +1,7 @@
 package sample.game.logic;
 
 import randoop.*;
-import sample.Color;
+import sample.model.util.Color;
 
 public class RandoopSeedGenerator {
     @TestValue
@@ -29,10 +29,10 @@ public class RandoopSeedGenerator {
     public static int i7 = 7;
 
     public Color getBlackColor() {
-        return Color.Black;
+        return Color.BLACK;
     }
 
     public Color getWhiteColor() {
-        return Color.White;
+        return Color.WHITE;
     }
 }

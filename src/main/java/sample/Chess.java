@@ -6,6 +6,7 @@ import sample.game.logic.chessman.ChessManClass;
 import sample.game.logic.chessman.Empty;
 import sample.game.model.Move;
 import sample.game.view.ChessboardIOController;
+import sample.model.util.Color;
 
 import java.io.IOException;
 

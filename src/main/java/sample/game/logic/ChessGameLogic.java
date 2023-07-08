@@ -1,8 +1,8 @@
 package sample.game.logic;
 
-import sample.*;
 import sample.game.logic.chessman.*;
 import sample.game.logic.exception.InvalidBoardException;
+import sample.model.util.Color;
 
 import java.io.*;
 import java.util.Arrays;
@@ -34,32 +34,32 @@ public class ChessGameLogic implements Serializable {
 
     public void resetBoard() {
         for (int i = 0; i < 8; i++) {
-            chessboard[6][i] = new Pawn(Color.White);
+            chessboard[6][i] = new Pawn(Color.WHITE);
         }
-        chessboard[7][0] = new Rook(Color.White);
-        chessboard[7][7] = new Rook(Color.White);
-        chessboard[7][1] = new Bishop(Color.White);
-        chessboard[7][6] = new Bishop(Color.White);
-        chessboard[7][2] = new Knight(Color.White);
-        chessboard[7][5] = new Knight(Color.White);
-        chessboard[7][3] = new Queen(Color.White);
-        chessboard[7][4] = new King(Color.White);
+        chessboard[7][0] = new Rook(Color.WHITE);
+        chessboard[7][7] = new Rook(Color.WHITE);
+        chessboard[7][1] = new Bishop(Color.WHITE);
+        chessboard[7][6] = new Bishop(Color.WHITE);
+        chessboard[7][2] = new Knight(Color.WHITE);
+        chessboard[7][5] = new Knight(Color.WHITE);
+        chessboard[7][3] = new Queen(Color.WHITE);
+        chessboard[7][4] = new King(Color.WHITE);
         for (int i = 2; i < 6; i++) {
             for (int j = 0; j < 8; j++) {
                 chessboard[i][j] = new Empty();
             }
         }
         for (int i = 0; i < 8; i++) {
-            chessboard[1][i] = new Pawn(Color.Black);
+            chessboard[1][i] = new Pawn(Color.BLACK);
         }
-        chessboard[0][0] = new Rook(Color.Black);
-        chessboard[0][7] = new Rook(Color.Black);
-        chessboard[0][1] = new Bishop(Color.Black);
-        chessboard[0][6] = new Bishop(Color.Black);
-        chessboard[0][2] = new Knight(Color.Black);
-        chessboard[0][5] = new Knight(Color.Black);
-        chessboard[0][3] = new Queen(Color.Black);
-        chessboard[0][4] = new King(Color.Black);
+        chessboard[0][0] = new Rook(Color.BLACK);
+        chessboard[0][7] = new Rook(Color.BLACK);
+        chessboard[0][1] = new Bishop(Color.BLACK);
+        chessboard[0][6] = new Bishop(Color.BLACK);
+        chessboard[0][2] = new Knight(Color.BLACK);
+        chessboard[0][5] = new Knight(Color.BLACK);
+        chessboard[0][3] = new Queen(Color.BLACK);
+        chessboard[0][4] = new King(Color.BLACK);
     }
 
     public boolean isCheckmate(Color color) {

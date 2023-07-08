@@ -1,9 +1,9 @@
 package sample.server;
 
-import sample.Clock;
-import sample.Color;
-import sample.Game;
-import sample.GameRequestInformation;
+import sample.model.util.Clock;
+import sample.model.util.Color;
+import sample.model.game.Game;
+import sample.model.game.GameRequestInformation;
 import sample.game.logic.ChessGameLogic;
 import sample.game.model.Move;
 import sample.tournament.Tournament;
@@ -288,11 +288,11 @@ public class ClientHandler implements Runnable {
         if (strings.length < 6) {
             temp = new GameRequestInformation(login_player, id, Boolean.parseBoolean(strings[1])
                     , Boolean.parseBoolean(strings[2]), strings[3].equals("Black")
-                    ? Color.Black : Color.White, requests.size(), null);
+                    ? Color.BLACK : Color.WHITE, requests.size(), null);
         } else {
             temp = new GameRequestInformation(login_player, id, Boolean.parseBoolean(strings[1])
                     , Boolean.parseBoolean(strings[2]), strings[3].equals("Black")
-                    ? Color.Black : Color.White, requests.size(), strings[4] + " " + strings[5]);
+                    ? Color.BLACK : Color.WHITE, requests.size(), strings[4] + " " + strings[5]);
             System.out.println(strings[4] + " " + strings[5]);
         }
         gameRequests.add(temp);

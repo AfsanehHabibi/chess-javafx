@@ -3,7 +3,7 @@ package sample.game.view.chessman;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
-import sample.Color;
+import sample.model.util.Color;
 
 public abstract class ChessManView {
     public BorderPane borderPane = new BorderPane();

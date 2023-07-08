@@ -1,6 +1,6 @@
 package sample.user;
 
-import sample.Game;
+import sample.model.game.Game;
 
 import java.io.Serializable;
 import java.util.ArrayList;

@@ -1,5 +1,6 @@
-package sample;
+package sample.model.game;
 
+import sample.model.util.Clock;
 import sample.server.GameManager;
 import sample.user.User;
 

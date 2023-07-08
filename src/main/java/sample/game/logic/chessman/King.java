@@ -1,6 +1,6 @@
 package sample.game.logic.chessman;
 
-import sample.Color;
+import sample.model.util.Color;
 import sample.game.logic.ChessGameLogic;
 
 public class King extends ChessManClass {

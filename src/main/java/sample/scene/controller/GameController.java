@@ -10,8 +10,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import sample.Chess;
-import sample.Clock;
-import sample.Color;
+import sample.model.util.Clock;
+import sample.model.util.Color;
 import sample.game.logic.ChessGameLogic;
 
 import java.io.IOException;
@@ -127,7 +127,7 @@ public class GameController extends FatherController implements Initializable {
                         game_clock = (Clock) object;
                         op_game_clock = new Clock(game_clock);
                         istime = true;
-                        if (first_color[0] == Color.White) {
+                        if (first_color[0] == Color.WHITE) {
                             count = true;
                             this_thread = new Thread(time);
                             thread_op = new Thread(time_2);
@@ -167,7 +167,7 @@ public class GameController extends FatherController implements Initializable {
                                 }
                                 Platform.runLater(() -> {
                                     String add;
-                                    if (chess.getColor() == Color.White) {
+                                    if (chess.getColor() == Color.WHITE) {
                                         add = "0 1";
                                     } else
                                         add = "1 0";
@@ -183,7 +183,7 @@ public class GameController extends FatherController implements Initializable {
 
                                 Platform.runLater(() -> {
                                     String add;
-                                    if (chess.getColor() == Color.White) {
+                                    if (chess.getColor() == Color.WHITE) {
                                         add = "1 0";
                                     } else
                                         add = "0 1";

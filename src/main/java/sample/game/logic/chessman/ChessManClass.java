@@ -1,7 +1,7 @@
 package sample.game.logic.chessman;
 
 
-import sample.Color;
+import sample.model.util.Color;
 import sample.game.logic.ChessGameLogic;
 
 import java.io.Serializable;
@@ -81,8 +81,8 @@ public abstract class ChessManClass implements Serializable {
         if (color == null)
             return 'N';
         return switch (color) {
-            case White -> 'W';
-            case Black -> 'B';
+            case WHITE -> 'W';
+            case BLACK -> 'B';
         };
     }
 

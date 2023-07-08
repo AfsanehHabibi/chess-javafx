@@ -1,8 +1,11 @@
 package sample.server;
 
-import sample.*;
 import sample.game.logic.ChessGameLogic;
 import sample.game.model.Move;
+import sample.model.game.Game;
+import sample.model.game.GameRequestInformation;
+import sample.model.game.GameResult;
+import sample.model.util.Color;
 import sample.user.User;
 
 import java.util.ArrayList;
@@ -27,7 +30,7 @@ public class GameManager {
         whiteClient = null;
         blackClient = null;
         if (Objects.equals(information.getSeekerPlayer(), user1)) {
-            if (information.getColor() == Color.Black) {
+            if (information.getColor() == Color.BLACK) {
                 blackClient = client1;
                 whiteClient = client2;
             } else {
@@ -35,7 +38,7 @@ public class GameManager {
                 whiteClient = client1;
             }
         } else if (Objects.equals(information.getSeekerPlayer(), user2)) {
-            if (information.getColor() == Color.Black) {
+            if (information.getColor() == Color.BLACK) {
                 blackClient = client2;
                 whiteClient = client1;
             } else {
@@ -57,7 +60,7 @@ public class GameManager {
         client1.setCurrentGameManager(this);
         client2.setCurrentGameManager(this);
         notifyStartOfTheGame();
-        turn = Color.White;
+        turn = Color.WHITE;
         audiences = new ArrayList<>();
     }
 
@@ -72,15 +75,15 @@ public class GameManager {
         if (client == whiteClient)
             isWhiteJoined = true;
         if (isBlackJoined && isWhiteJoined) {
-            whiteClient.sendColorAndClock(Color.White, game.getClock());
-            blackClient.sendColorAndClock(Color.Black, game.getClock());
+            whiteClient.sendColorAndClock(Color.WHITE, game.getClock());
+            blackClient.sendColorAndClock(Color.BLACK, game.getClock());
             notifyPlayerToMove(currentBoard.clone());
         }
     }
 
     public void move(ClientHandler client, Move move, String notation) {
-        if (!((turn == Color.Black && client == blackClient)
-                || (turn == Color.White && client == whiteClient)))
+        if (!((turn == Color.BLACK && client == blackClient)
+                || (turn == Color.WHITE && client == whiteClient)))
             return;
         if (currentBoard.canMove(move.iSrc, move.jSrc, move.iDes, move.jDes)) {
             currentBoard.move(move.iSrc, move.jSrc, move.iDes, move.jDes);
@@ -103,14 +106,14 @@ public class GameManager {
     }
 
     private void notifyPlayerToMove(ChessGameLogic lastVersion) {
-        if (turn == Color.Black)
+        if (turn == Color.BLACK)
             blackClient.notifyToMove(lastVersion);
         else
             whiteClient.notifyToMove(lastVersion);
     }
 
     private void updateTurn() {
-        turn = turn == Color.Black ? Color.White:Color.Black;
+        turn = turn == Color.BLACK ? Color.WHITE :Color.BLACK;
     }
 
     public void requestDraw(ClientHandler client) {
