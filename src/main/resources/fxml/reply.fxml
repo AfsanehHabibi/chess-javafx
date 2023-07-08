@@ -54,9 +54,9 @@
       </ButtonBar>
       <ScrollPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
          <content>
-            <TableView fx:id="notations" prefHeight="321.0" prefWidth="125.0">
+            <TableView fx:id="notationTable" prefHeight="321.0" prefWidth="125.0">
               <columns>
-                <TableColumn fx:id="moves" prefWidth="124.00001009305318" text="Notations" />
+                <TableColumn fx:id="notationColumn" prefWidth="125.0" text="Notations" />
               </columns>
             </TableView>
          </content>

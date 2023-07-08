@@ -3,6 +3,7 @@ package sample.server;
 import sample.game.logic.ChessGameLogic;
 import sample.game.model.Move;
 import sample.model.game.Game;
+import sample.model.game.GameMoveRecord;
 import sample.model.game.GameRequestInformation;
 import sample.model.game.GameResult;
 import sample.model.util.Color;
@@ -86,22 +87,25 @@ public class GameManager {
                 || (turn == Color.WHITE && client == whiteClient)))
             return;
         if (currentBoard.canMove(move.iSrc, move.jSrc, move.iDes, move.jDes)) {
+            ChessGameLogic beforeMoveBoard = currentBoard.clone();
             currentBoard.move(move.iSrc, move.jSrc, move.iDes, move.jDes);
 
-            game.moves.add(notation);
+
 
             //!!! do not change this, sending the object without cloning it leads to unexpected
             // results
-            ChessGameLogic lastVersion = currentBoard.clone();
-            whiteClient.sendNewGameMove(notation, lastVersion);
-            blackClient.sendNewGameMove(notation, lastVersion);
+            ChessGameLogic afterMoveBoard = currentBoard.clone();
+            GameMoveRecord moveRecord = new GameMoveRecord(notation, beforeMoveBoard, afterMoveBoard, move);
+            game.moves.add(moveRecord);
+            whiteClient.sendNewGameMove(moveRecord);
+            blackClient.sendNewGameMove(moveRecord);
 
             for (ClientHandler audience : audiences) {
-                audience.sendNewGameMove(notation, lastVersion);
+                audience.sendNewGameMove(moveRecord);
             }
             updateTurn();
 
-            notifyPlayerToMove(lastVersion);
+            notifyPlayerToMove(afterMoveBoard);
         }
     }
 
@@ -198,7 +202,7 @@ public class GameManager {
 
     public void updateWatch(ClientHandler client) {
         if (isNotInAudiences(client)) return;
-        client.sendPastMovesAndBoard(game.moves, currentBoard.clone());
+        client.sendPastMovesAndBoard(game.moves);
     }
 
     private boolean isNotInAudiences(ClientHandler client) {

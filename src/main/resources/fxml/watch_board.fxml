@@ -13,6 +13,8 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TableColumn?>
 <GridPane prefHeight="600.0" prefWidth="600.0" stylesheets="/css/css.css" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.scene.controller.WatchBoardController">
   <columnConstraints>
       <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
@@ -56,9 +58,13 @@
          </padding>
       </ButtonBar>
       <ScrollPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
-         <content>
-            <Label fx:id="notationsHolder" />
-         </content>
+          <content>
+              <TableView fx:id="notationTable" prefHeight="321.0" prefWidth="125.0">
+                  <columns>
+                      <TableColumn fx:id="notationColumn" prefWidth="125.0" text="Notations" />
+                  </columns>
+              </TableView>
+          </content>
       </ScrollPane>
       <VBox prefHeight="200.0" prefWidth="100.0" spacing="5.0" GridPane.rowIndex="1">
          <children>

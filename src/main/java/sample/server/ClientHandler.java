@@ -1,5 +1,6 @@
 package sample.server;
 
+import sample.model.game.GameMoveRecord;
 import sample.model.util.Clock;
 import sample.model.util.Color;
 import sample.model.game.Game;
@@ -134,13 +135,11 @@ public class ClientHandler implements Runnable {
         }
     }
 
-    public void sendNewGameMove(String notation, ChessGameLogic board) {
+    public void sendNewGameMove(GameMoveRecord moveRecord) {
         try {
             objectOutputStream.writeUTF("new move");
             objectOutputStream.flush();
-            objectOutputStream.writeObject(board);
-            objectOutputStream.flush();
-            objectOutputStream.writeUTF(notation);
+            objectOutputStream.writeObject(moveRecord);
             objectOutputStream.flush();
         } catch (IOException e) {
             e.printStackTrace();
@@ -265,19 +264,9 @@ public class ClientHandler implements Runnable {
     }
 
     private void getGameResult(String receive) throws IOException {
-        System.out.println("result of game");
-        String[] strings = receive.split(" ");
-        //login_player.games.get(0)
         String confirmation = objectInputStream.readUTF();
         if (confirmation.equals("ready to receive notations")) {
-            System.out.println("ready to receive notations");
-            System.out.println("login player moves result\n" + login_player.getGames().get(0).moves);
-            for (String move : login_player.getGames().get(0).moves) {
-                objectOutputStream.writeUTF(move);
-                System.out.println(move);
-                objectOutputStream.flush();
-            }
-            objectOutputStream.writeUTF("over");
+            objectOutputStream.writeObject(login_player.getGames().get(0).moves);
             objectOutputStream.flush();
         }
     }
@@ -472,15 +461,9 @@ public class ClientHandler implements Runnable {
         }
     }
 
-    public void sendPastMovesAndBoard(ArrayList<String> moves, ChessGameLogic board) {
+    public void sendPastMovesAndBoard(ArrayList<GameMoveRecord> moves) {
         try {
-            for (String move : moves) {
-                objectOutputStream.writeUTF(move);
-                objectOutputStream.flush();
-            }
-            objectOutputStream.writeUTF("over");
-            objectOutputStream.flush();
-            objectOutputStream.writeObject(board);
+            objectOutputStream.writeObject(moves);
             objectOutputStream.flush();
         } catch (IOException e) {
             e.printStackTrace();

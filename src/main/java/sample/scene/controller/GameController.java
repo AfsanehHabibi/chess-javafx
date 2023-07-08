@@ -4,12 +4,10 @@ import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import sample.game.Chess;
+import sample.model.game.GameMoveRecord;
 import sample.model.util.Clock;
 import sample.model.util.Color;
 import sample.game.logic.ChessGameLogic;
@@ -22,9 +20,9 @@ import static sample.client.Client.objectInputStream;
 import static sample.client.Client.objectOutputStream;
 
 public class GameController extends FatherController implements Initializable {
-    static Label copy_notations;
     static Thread this_thread;
     static Thread thread_op;
+
     Chess chess;
     static boolean count = true;
     static Clock game_clock;
@@ -36,33 +34,34 @@ public class GameController extends FatherController implements Initializable {
     @FXML
     Label op_clock;
     @FXML
-    Label notations;
+    TableView<String> notations;
     @FXML
-    Button main_button;
+    TableColumn<String, String> moves;
+    @FXML
+    Button mainButton;
     @FXML
     Button draw;
     @FXML
-    ChoiceBox<String> chatReciever;
+    ChoiceBox<String> chatReceiver;
     @FXML
     TextField massage;
     @FXML
     Label chat;
     @FXML
-    Button close_button;
+    Button closeButton;
     @FXML
-    Button send_button;
-    boolean istime = false;
+    Button sendButton;
+    boolean isTime = false;
     Object key = new Object();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        copy_notations = notations;
         Task time;
         Task time_2;
         final Color[] first_color = new Color[1];
-        chatReciever.getItems().add("opponent");
-        chatReciever.getItems().add("group");
-        chatReciever.setValue("opponent");
+        chatReceiver.getItems().add("opponent");
+        chatReceiver.getItems().add("group");
+        chatReceiver.setValue("opponent");
         time = new Task() {
             @Override
             protected Object call() throws Exception {
@@ -126,7 +125,7 @@ public class GameController extends FatherController implements Initializable {
                     if (object != null) {
                         game_clock = (Clock) object;
                         op_game_clock = new Clock(game_clock);
-                        istime = true;
+                        isTime = true;
                         if (first_color[0] == Color.WHITE) {
                             count = true;
                             this_thread = new Thread(time);
@@ -160,55 +159,51 @@ public class GameController extends FatherController implements Initializable {
                         if (objectInputStream.available() != 0) {
                             String line = objectInputStream.readUTF();
                             if (line.equals("finish lose")) {
-                                main_button.setVisible(true);
-                                if (istime) {
+                                mainButton.setVisible(true);
+                                if (isTime) {
                                     op_game_clock.stopThread();
                                     game_clock.stopThread();
                                 }
-                                Platform.runLater(() -> {
+                                /*Platform.runLater(() -> {
                                     String add;
                                     if (chess.getColor() == Color.WHITE) {
                                         add = "0 1";
                                     } else
                                         add = "1 0";
                                     notations.setText(notations.getText() + " " + add);
-                                });
+                                });*/
                                 break;
                             } else if (line.equals("finish win")) {
-                                main_button.setVisible(true);
-                                if (istime) {
+                                mainButton.setVisible(true);
+                                if (isTime) {
                                     game_clock.stopThread();
                                     op_game_clock.stopThread();
                                 }
 
-                                Platform.runLater(() -> {
+                                /*Platform.runLater(() -> {
                                     String add;
                                     if (chess.getColor() == Color.WHITE) {
                                         add = "1 0";
                                     } else
                                         add = "0 1";
                                     notations.setText(notations.getText() + " " + add);
-                                });
+                                });*/
                                 break;
                             } else if (line.equals("want a draw")) {
                                 Platform.runLater(() -> draw.setText("opponent\nasked"));
                             } else if (line.equals("finish draw")) {
-                                main_button.setVisible(true);
-                                if (istime) {
+                                mainButton.setVisible(true);
+                                if (isTime) {
                                     game_clock.stopThread();
                                     op_game_clock.stopThread();
                                 }
-                                Platform.runLater(() -> notations.setText(notations.getText() + " 0.5 0.5"));
+//                                Platform.runLater(() -> notations.setText(notations.getText() + " 0.5 0.5"));
                                 break;
                             } else if (line.startsWith("chat op")) {
                                 Platform.runLater(() -> chat.setText(chat.getText() + "\n" + line.substring(7)));
                             } else if (line.startsWith("new move")) {
-                                ChessGameLogic gameLogic = (ChessGameLogic) objectInputStream.readObject();
-                                String notation = objectInputStream.readUTF();
-                                Platform.runLater(() -> {
-                                            notations.setText(notations.getText() + " " + notation);
-                                            chess.update(gameLogic);
-                                });
+                                GameMoveRecord moveRecord = (GameMoveRecord) objectInputStream.readObject();
+                                Platform.runLater(() -> chess.updateBoardAndNotation(moveRecord));
                             }else if (line.startsWith("allow to move")) {
                                 ChessGameLogic gameLogic = (ChessGameLogic) objectInputStream.readObject();
                                 Platform.runLater(() -> chess.setClicks(gameLogic));
@@ -223,7 +218,7 @@ public class GameController extends FatherController implements Initializable {
         };
         Thread t = new Thread(task);
         t.start();
-        chess = new Chess(first_color[0], grid);
+        chess = new Chess(first_color[0], grid, notations, moves);
         chess.start();
         try {
             chess.join();
@@ -234,16 +229,16 @@ public class GameController extends FatherController implements Initializable {
 
     public void closeChat() {
         chat.setVisible(false);
-        send_button.setVisible(false);
-        close_button.setVisible(false);
+        sendButton.setVisible(false);
+        closeButton.setVisible(false);
         massage.setVisible(false);
-        chatReciever.setVisible(false);
+        chatReceiver.setVisible(false);
     }
 
     public void sendMassage() {
         String add;
-        Platform.runLater(() -> notations.setText(notations.getText() + "\n" + massage.getText()));
-        if (chatReciever.getValue().equals("opponent")) add = "op";
+        //Platform.runLater(() -> notations.setText(notations.getText() + "\n" + massage.getText()));
+        if (chatReceiver.getValue().equals("opponent")) add = "op";
         else
             add = "group";
         Thread send = new Thread(() -> {

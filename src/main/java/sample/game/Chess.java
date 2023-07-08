@@ -1,14 +1,20 @@
 package sample.game;
 
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.layout.GridPane;
 import sample.game.logic.ChessGameLogic;
 import sample.game.logic.chessman.ChessManClass;
 import sample.game.logic.chessman.Empty;
 import sample.game.model.Move;
 import sample.game.view.ChessboardIOController;
+import sample.game.view.NotationBoardIOController;
+import sample.model.game.GameMoveRecord;
 import sample.model.util.Color;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import static sample.client.Client.objectOutputStream;
 
@@ -17,11 +23,16 @@ public class Chess extends Thread {
     Color color;
     private ChessGameLogic gameLogic;
     private ChessboardIOController chessboardIOController;
+    private NotationBoardIOController notationBoardIOController;
+    private ArrayList<GameMoveRecord> moveRecords;
 
-    public Chess(Color color, GridPane gridPane) {
+    public Chess(Color color, GridPane gridPane, TableView<String> tableView,
+                 TableColumn<String, String> tableColumn) {
         this.color = color;
         this.gameLogic = new ChessGameLogic();
         this.chessboardIOController = new ChessboardIOController(gameLogic, gridPane, this);
+        this.notationBoardIOController = new NotationBoardIOController(tableView, tableColumn);
+        moveRecords = new ArrayList<>();
     }
 
     @Override
@@ -97,5 +108,32 @@ public class Chess extends Thread {
 
     public Color getColor() {
         return color;
+    }
+
+    public void updateBoardAndNotation(GameMoveRecord moveRecord) {
+        moveRecords.add(moveRecord);
+        update(moveRecord.getAfterBoard());
+        notationBoardIOController.addToBoard(moveRecord.getNotation());
+    }
+
+    public void updateBoardAndNotation(ArrayList<GameMoveRecord> moves) {
+        moveRecords.addAll(moves);
+        update(moves.get(moves.size()-1).getAfterBoard());
+        notationBoardIOController.addAll(getNotations(moves));
+    }
+
+    private List<String> getNotations(List<GameMoveRecord> moves) {
+        List<String> notations = new ArrayList<>();
+        for (GameMoveRecord record: moves)
+            notations.add(record.getNotation());
+        return notations;
+    }
+
+    public void setNotationClicks() {
+        notationBoardIOController.setNotationClicks(this);
+    }
+
+    public void notifyClickOnNotation(int index) {
+        update(moveRecords.get(index).getAfterBoard());
     }
 }

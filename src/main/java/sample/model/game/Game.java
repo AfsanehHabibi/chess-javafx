@@ -15,7 +15,7 @@ public class Game implements Serializable {
     boolean withClock;
     transient Clock clock;
     GameResult result;
-    public ArrayList<String> moves = new ArrayList<>();
+    public ArrayList<GameMoveRecord> moves = new ArrayList<>();
     //remove this dependency later by making server keep game managers rather than games
     transient private GameManager gameManager;
     String id;

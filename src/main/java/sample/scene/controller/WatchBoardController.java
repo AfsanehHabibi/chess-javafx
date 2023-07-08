@@ -4,16 +4,14 @@ import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import sample.game.Chess;
-import sample.game.logic.ChessGameLogic;
+import sample.model.game.GameMoveRecord;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import static sample.client.Client.objectInputStream;
@@ -23,7 +21,9 @@ public class WatchBoardController extends FatherController implements Initializa
     @FXML
     GridPane grid;
     @FXML
-    Label notationsHolder;
+    TableView<String> notationTable;
+    @FXML
+    TableColumn<String, String> notationColumn;
     @FXML
     Button mainButton;
     @FXML
@@ -41,7 +41,7 @@ public class WatchBoardController extends FatherController implements Initializa
     public void initialize(URL location, ResourceBundle resources) {
         chatReceiver.getItems().add("Group");
         chatReceiver.setValue("Group");
-        chess = new Chess(null, grid);
+        chess = new Chess(null, grid, notationTable, notationColumn);
         chess.start();
         try {
             chess.join();
@@ -53,18 +53,8 @@ public class WatchBoardController extends FatherController implements Initializa
             protected Object call() throws Exception {
                 objectOutputStream.writeUTF("ready to watch");
                 objectOutputStream.flush();
-                String line = objectInputStream.readUTF();
-                StringBuilder notations = new StringBuilder();
-                while (!line.equals("over")) {
-                    notations.append(" ").append(line);
-                    line = objectInputStream.readUTF();
-                }
-                ChessGameLogic gameLogic = (ChessGameLogic) objectInputStream.readObject();
-                String finalNotations = notations.toString();
-                Platform.runLater(() -> {
-                    notationsHolder.setText(finalNotations);
-                    chess.update(gameLogic);
-                });
+                ArrayList<GameMoveRecord> moves = (ArrayList<GameMoveRecord>) objectInputStream.readObject();
+                Platform.runLater(() -> chess.updateBoardAndNotation(moves));
                 return null;
             }
         };
@@ -89,12 +79,8 @@ public class WatchBoardController extends FatherController implements Initializa
                                 Platform.runLater(()-> chat.setText(chat.getText()+"\n"+line.substring(10)));
                                 continue;
                             }
-                            ChessGameLogic gameLogic = (ChessGameLogic) objectInputStream.readObject();
-                            String notation = objectInputStream.readUTF();
-                            Platform.runLater(() -> {
-                                notationsHolder.setText(notationsHolder.getText() + " " + notation);
-                                chess.update(gameLogic);
-                            });
+                            GameMoveRecord moveRecord = (GameMoveRecord) objectInputStream.readObject();
+                            Platform.runLater(() -> chess.updateBoardAndNotation(moveRecord));
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -111,7 +97,7 @@ public class WatchBoardController extends FatherController implements Initializa
                 try {
                     objectOutputStream.writeUTF("chat group "+massage.getText());
                     objectOutputStream.flush();
-                    Platform.runLater(()-> notationsHolder.setText(notationsHolder.getText()+" "+massage.getText()));
+                    //Platform.runLater(()-> notationsHolder.setText(notationsHolder.getText()+" "+massage.getText()));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
