@@ -1,4 +1,4 @@
-package sample;
+package sample.game;
 
 import javafx.scene.layout.GridPane;
 import sample.game.logic.ChessGameLogic;

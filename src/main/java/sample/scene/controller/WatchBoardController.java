@@ -9,7 +9,7 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
-import sample.Chess;
+import sample.game.Chess;
 import sample.game.logic.ChessGameLogic;
 
 import java.io.IOException;

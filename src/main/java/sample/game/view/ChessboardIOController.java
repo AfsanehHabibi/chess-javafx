@@ -2,7 +2,7 @@ package sample.game.view;
 
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
-import sample.*;
+import sample.game.Chess;
 import sample.game.logic.ChessGameLogic;
 import sample.game.logic.chessman.*;
 import sample.game.view.chessman.*;

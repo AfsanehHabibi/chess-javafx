@@ -7,7 +7,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.GridPane;
-import sample.Chess;
+import sample.game.Chess;
 
 import java.io.IOException;
 import java.net.URL;
