@@ -11,6 +11,7 @@ import sample.model.util.Color;
 import sample.user.User;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import static sample.server.Server.*;
@@ -59,8 +60,8 @@ public class GameManager {
         gameRequests.removeAll(client2.requests);
         client1.requests.clear();
         client2.requests.clear();
-        client1.setCurrentGameManager(this);
-        client2.setCurrentGameManager(this);
+        client1.setCurrentGameAndChatManager(this);
+        client2.setCurrentGameAndChatManager(this);
         notifyStartOfTheGame();
         turn = Color.WHITE;
         audiences = new ArrayList<>();
@@ -90,8 +91,6 @@ public class GameManager {
         if (currentBoard.canMove(move.iSrc, move.jSrc, move.iDes, move.jDes)) {
             ChessGameLogic beforeMoveBoard = currentBoard.clone();
             currentBoard.move(move.iSrc, move.jSrc, move.iDes, move.jDes);
-
-
 
             //!!! do not change this, sending the object without cloning it leads to unexpected
             // results
@@ -127,7 +126,7 @@ public class GameManager {
         getOpponent(client).sendDrawRequest();
     }
 
-    private ClientHandler getOpponent(ClientHandler client) {
+    protected ClientHandler getOpponent(ClientHandler client) {
         if (client == blackClient)
             return whiteClient;
         if (client == whiteClient)
@@ -187,19 +186,8 @@ public class GameManager {
         whiteClient.isPlaying = false;
     }
 
-
-    public void messageOpponent(ClientHandler client, String message) {
-        if (isNotPlayer(client)) return;
-        getOpponent(client).sendMessage(message);
-    }
-
-    private boolean isNotPlayer(ClientHandler client) {
+    protected boolean isNotPlayer(ClientHandler client) {
         return (client != blackClient && client != whiteClient);
-    }
-
-    public void messageAudiences(ClientHandler client, String message) {
-        if (isNotInAudiences(client)) return;
-        for (ClientHandler audience : audiences) audience.sendMessage(message);
     }
 
     public void updateWatch(ClientHandler client) {
@@ -207,7 +195,18 @@ public class GameManager {
         client.sendPastMovesAndBoard(game.moves);
     }
 
-    private boolean isNotInAudiences(ClientHandler client) {
+    protected boolean isNotInAudiences(ClientHandler client) {
         return !audiences.contains(client);
+    }
+
+    protected List<ClientHandler> getAudiences() {
+        return audiences;
+    }
+
+    protected List<ClientHandler> getPlayers() {
+        ArrayList<ClientHandler> players = new ArrayList<>();
+        players.add(blackClient);
+        players.add(whiteClient);
+        return players;
     }
 }

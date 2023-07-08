@@ -70,11 +70,11 @@
          <children>
             <ScrollPane prefHeight="200.0" prefWidth="200.0">
                <content>
-                  <Label fx:id="chat" />
+                  <Label fx:id="chatContent" />
                </content>
             </ScrollPane>
             <ChoiceBox fx:id="chatReceiver" prefWidth="150.0" />
-            <TextField fx:id="massage" />
+            <TextField fx:id="messageHolder" />
             <HBox prefHeight="100.0" prefWidth="200.0" spacing="20.0">
                <children>
                   <Button fx:id="sendButton" mnemonicParsing="false" onMouseClicked="#sendMassage" text="send" />

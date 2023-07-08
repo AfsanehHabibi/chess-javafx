@@ -7,6 +7,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import sample.game.Chess;
+import sample.game.view.ChatIOController;
+import sample.model.chat.Message;
 import sample.model.game.GameMoveRecord;
 
 import java.io.IOException;
@@ -29,18 +31,19 @@ public class WatchBoardController extends FatherController implements Initializa
     @FXML
     ChoiceBox<String> chatReceiver;
     @FXML
-    TextField massage;
+    TextField messageHolder;
     @FXML
-    Label chat;
+    Label chatContent;
     @FXML
     Button sendButton;
 
     private Chess chess;
+    ChatIOController chatIOController;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        chatReceiver.getItems().add("Group");
-        chatReceiver.setValue("Group");
+        chatIOController = new ChatIOController(chatReceiver, messageHolder, chatContent,
+                sendButton, null, true);
         chess = new Chess(null, grid, notationTable, notationColumn);
         chess.start();
         try {
@@ -75,8 +78,9 @@ public class WatchBoardController extends FatherController implements Initializa
                             if(line.equals("over")){
                                 mainButton.setVisible(true);
                                 break;
-                            } else if(line.startsWith("chat ")) {
-                                Platform.runLater(()-> chat.setText(chat.getText()+"\n"+line.substring(10)));
+                            } else if(line.startsWith("chat")) {
+                                Message message = (Message) objectInputStream.readObject();
+                                Platform.runLater(() -> chatIOController.addNewMessage(message));
                                 continue;
                             }
                             GameMoveRecord moveRecord = (GameMoveRecord) objectInputStream.readObject();
@@ -93,21 +97,22 @@ public class WatchBoardController extends FatherController implements Initializa
     }
 
     public void sendMassage() {
-            Thread send = new Thread(() -> {
-                try {
-                    objectOutputStream.writeUTF("chat group "+massage.getText());
-                    objectOutputStream.flush();
-                    //Platform.runLater(()-> notationsHolder.setText(notationsHolder.getText()+" "+massage.getText()));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            });
-            send.start();
+        Message message = chatIOController.getMessageToBeSendAndClear();
+        Thread send = new Thread(() -> {
             try {
-                send.join();
-            } catch (InterruptedException e) {
+                objectOutputStream.writeUTF("chat");
+                objectOutputStream.flush();
+                objectOutputStream.writeObject(message);
+                objectOutputStream.flush();
+            } catch (IOException e) {
                 e.printStackTrace();
             }
-            massage.clear();
+        });
+        send.start();
+        try {
+            send.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }

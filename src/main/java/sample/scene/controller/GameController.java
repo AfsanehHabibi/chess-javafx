@@ -7,6 +7,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import sample.game.Chess;
+import sample.game.view.ChatIOController;
+import sample.model.chat.Message;
 import sample.model.game.GameMoveRecord;
 import sample.model.util.Clock;
 import sample.model.util.Color;
@@ -44,24 +46,25 @@ public class GameController extends FatherController implements Initializable {
     @FXML
     ChoiceBox<String> chatReceiver;
     @FXML
-    TextField massage;
+    TextField messageHolder;
     @FXML
-    Label chat;
+    Label chatContent;
     @FXML
     Button closeButton;
     @FXML
     Button sendButton;
+
     boolean isTime = false;
     Object key = new Object();
+    ChatIOController chatIOController;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         Task time;
         Task time_2;
         final Color[] first_color = new Color[1];
-        chatReceiver.getItems().add("opponent");
-        chatReceiver.getItems().add("group");
-        chatReceiver.setValue("opponent");
+        chatIOController = new ChatIOController(chatReceiver, messageHolder,
+                chatContent, sendButton, closeButton, false);
         time = new Task() {
             @Override
             protected Object call() throws Exception {
@@ -197,10 +200,10 @@ public class GameController extends FatherController implements Initializable {
                                     game_clock.stopThread();
                                     op_game_clock.stopThread();
                                 }
-//                                Platform.runLater(() -> notations.setText(notations.getText() + " 0.5 0.5"));
                                 break;
-                            } else if (line.startsWith("chat op")) {
-                                Platform.runLater(() -> chat.setText(chat.getText() + "\n" + line.substring(7)));
+                            } else if (line.startsWith("chat")) {
+                                Message message = (Message) objectInputStream.readObject();
+                                Platform.runLater(() -> chatIOController.addNewMessage(message));
                             } else if (line.startsWith("new move")) {
                                 GameMoveRecord moveRecord = (GameMoveRecord) objectInputStream.readObject();
                                 Platform.runLater(() -> chess.updateBoardAndNotation(moveRecord));
@@ -228,22 +231,16 @@ public class GameController extends FatherController implements Initializable {
     }
 
     public void closeChat() {
-        chat.setVisible(false);
-        sendButton.setVisible(false);
-        closeButton.setVisible(false);
-        massage.setVisible(false);
-        chatReceiver.setVisible(false);
+        chatIOController.closeChat();
     }
 
     public void sendMassage() {
-        String add;
-        //Platform.runLater(() -> notations.setText(notations.getText() + "\n" + massage.getText()));
-        if (chatReceiver.getValue().equals("opponent")) add = "op";
-        else
-            add = "group";
+        Message message = chatIOController.getMessageToBeSendAndClear();
         Thread send = new Thread(() -> {
             try {
-                objectOutputStream.writeUTF("chat " + add + " " + massage.getText());
+                objectOutputStream.writeUTF("chat");
+                objectOutputStream.flush();
+                objectOutputStream.writeObject(message);
                 objectOutputStream.flush();
             } catch (IOException e) {
                 e.printStackTrace();
@@ -255,7 +252,6 @@ public class GameController extends FatherController implements Initializable {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        massage.clear();
     }
 
     public void askDraw() {

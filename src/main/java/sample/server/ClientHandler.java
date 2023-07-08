@@ -1,5 +1,7 @@
 package sample.server;
 
+import sample.model.chat.Message;
+import sample.model.chat.MessageRepresentation;
 import sample.model.game.GameMoveRecord;
 import sample.model.util.Clock;
 import sample.model.util.Color;
@@ -35,6 +37,7 @@ public class ClientHandler implements Runnable {
     ArrayList<GameRequestInformation> requests;
     TournamentGame tournamentGame;
     private GameManager currentGameManager;
+    private ChatManager currentChatManager;
 
     ClientHandler(Socket socket, int id) throws IOException {
         this.socket = socket;
@@ -164,10 +167,12 @@ public class ClientHandler implements Runnable {
     }
 
     private void chat(String receive) throws IOException {
-        if (receive.startsWith("chat op")) {
-            currentGameManager.messageOpponent(this, receive);
-        } else {
-            currentGameManager.messageAudiences(this, receive);
+        try {
+            Message message = (Message) objectInputStream.readObject();
+            message.setSender(getLogin_player());
+            currentChatManager.message(this, message);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
         }
     }
 
@@ -239,6 +244,7 @@ public class ClientHandler implements Runnable {
         watch_game = getGameWithId(strings[1]);
         currentGameManager = watch_game.getGameManager();
         currentGameManager.addToAudiences(this);
+        currentChatManager = new ChatManager(currentGameManager);
     }
 
     private Game getGameWithId(String id) {
@@ -371,8 +377,9 @@ public class ClientHandler implements Runnable {
         return login_player;
     }
 
-    public void setCurrentGameManager(GameManager gameManager) {
+    public void setCurrentGameAndChatManager(GameManager gameManager) {
         this.currentGameManager = gameManager;
+        this.currentChatManager = new ChatManager(gameManager);
     }
 
     public void notifyStartOfTheGame() {
@@ -452,9 +459,11 @@ public class ClientHandler implements Runnable {
         }
     }
 
-    public void sendMessage(String message) {
+    public void sendMessage(Message message) {
         try {
-            objectOutputStream.writeUTF(message);
+            objectOutputStream.writeUTF("chat");
+            objectOutputStream.flush();
+            objectOutputStream.writeObject(message);
             objectOutputStream.flush();
         } catch (IOException e) {
             e.printStackTrace();
