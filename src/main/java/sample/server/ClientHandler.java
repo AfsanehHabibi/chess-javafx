@@ -120,7 +120,7 @@ public class ClientHandler implements Runnable {
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             }
-            currentGameManager.move(this, move, receive);
+            currentGameManager.move(this, move);
         }
     }
 

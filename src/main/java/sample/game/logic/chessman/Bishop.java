@@ -15,8 +15,8 @@ public class Bishop extends ChessManClass {
     }
 
     @Override
-    public char getChessPieceName() {
-        return 'B';
+    public String getChessPieceName() {
+        return "B";
     }
 
     @Override

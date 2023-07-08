@@ -163,4 +163,8 @@ public class ChessGameLogic implements Serializable {
         ChessGameLogic gameLogic = (ChessGameLogic) o;
         return Arrays.deepEquals(chessboard, gameLogic.chessboard);
     }
+
+    public boolean isEmpty(int i, int j) {
+        return chessboard[i][j] instanceof Empty;
+    }
 }

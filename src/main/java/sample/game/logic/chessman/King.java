@@ -15,8 +15,8 @@ public class King extends ChessManClass {
     }
 
     @Override
-    public char getChessPieceName() {
-        return 'K';
+    public String getChessPieceName() {
+        return "K";
     }
 
 

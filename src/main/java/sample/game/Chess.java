@@ -68,23 +68,15 @@ public class Chess extends Thread {
     public void finalMove(int i_src, int j_src, int i_dest, int j_dest, boolean send_data) {
         if (gameLogic.getChessboard()[i_src][j_src] instanceof Empty)
             return;
-        boolean x = !(gameLogic.getChessboard()[i_dest][j_dest] instanceof Empty);
         if (send_data) {
-            sendData(i_src, j_src, i_dest, j_dest, gameLogic.getChessboard(), x);
+            sendData(i_src, j_src, i_dest, j_dest);
             chessboardIOController.turnOffClicks();
         }
     }
 
-    void sendData(int i_src, int j_src, int i_dest, int j_dest, ChessManClass[][] chess_board, boolean isCaptured) {
-        String notation = "";
-        notation += chess_board[i_dest][j_dest].getChessPieceName();
-        if (isCaptured)
-            notation += 'x';
-        notation += chess_board[i_dest][j_dest].getName(j_dest);
-        int temp = 8 - i_dest;
-        notation += temp;
+    void sendData(int i_src, int j_src, int i_dest, int j_dest) {
         try {
-            objectOutputStream.writeUTF(notation);
+            objectOutputStream.writeUTF("sending move");
             objectOutputStream.flush();
             objectOutputStream.writeObject(new Move(i_src, j_src, i_dest, j_dest));
             objectOutputStream.flush();

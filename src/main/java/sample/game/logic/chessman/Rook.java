@@ -15,8 +15,8 @@ public class Rook extends ChessManClass {
     }
 
     @Override
-    public char getChessPieceName() {
-        return 'R';
+    public String getChessPieceName() {
+        return "R";
     }
 
     @Override

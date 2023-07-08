@@ -1,6 +1,7 @@
 package sample.server;
 
 import sample.game.logic.ChessGameLogic;
+import sample.game.logic.util.NotationManager;
 import sample.game.model.Move;
 import sample.model.game.Game;
 import sample.model.game.GameMoveRecord;
@@ -82,7 +83,7 @@ public class GameManager {
         }
     }
 
-    public void move(ClientHandler client, Move move, String notation) {
+    public void move(ClientHandler client, Move move) {
         if (!((turn == Color.BLACK && client == blackClient)
                 || (turn == Color.WHITE && client == whiteClient)))
             return;
@@ -95,6 +96,7 @@ public class GameManager {
             //!!! do not change this, sending the object without cloning it leads to unexpected
             // results
             ChessGameLogic afterMoveBoard = currentBoard.clone();
+            String notation = new NotationManager().getNotation(move, beforeMoveBoard, afterMoveBoard);
             GameMoveRecord moveRecord = new GameMoveRecord(notation, beforeMoveBoard, afterMoveBoard, move);
             game.moves.add(moveRecord);
             whiteClient.sendNewGameMove(moveRecord);

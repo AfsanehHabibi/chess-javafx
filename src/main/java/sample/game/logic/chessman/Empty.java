@@ -19,8 +19,8 @@ public class Empty extends ChessManClass {
     }
 
     @Override
-    public char getChessPieceName() {
-        return 0;
+    public String getChessPieceName() {
+        return "";
     }
 
     @Override

@@ -15,8 +15,8 @@ public class Knight extends ChessManClass {
     }
 
     @Override
-    public char getChessPieceName() {
-        return 'N';
+    public String getChessPieceName() {
+        return "N";
     }
 
     @Override

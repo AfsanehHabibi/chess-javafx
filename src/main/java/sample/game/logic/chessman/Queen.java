@@ -15,8 +15,8 @@ public class Queen extends ChessManClass {
     }
 
     @Override
-    public char getChessPieceName() {
-        return 'Q';
+    public String getChessPieceName() {
+        return "Q";
     }
 
     @Override

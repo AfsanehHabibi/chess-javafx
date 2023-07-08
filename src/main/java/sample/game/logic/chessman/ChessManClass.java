@@ -71,11 +71,7 @@ public abstract class ChessManClass implements Serializable {
         return false;
     }
 
-    public char getName(int j_dest) {
-        return (char) (j_dest + 'a');
-    }
-
-    public abstract char getChessPieceName();
+    public abstract String getChessPieceName();
 
     public char getColorChar() {
         if (color == null)
@@ -92,7 +88,7 @@ public abstract class ChessManClass implements Serializable {
     }
 
     public char getCharName() {
-        return getChessPieceName();
+        return getChessPieceName().charAt(0);
     }
 
     @Override
@@ -100,6 +96,6 @@ public abstract class ChessManClass implements Serializable {
         if (this == o) return true;
         if (!(o instanceof ChessManClass)) return false;
         ChessManClass that = (ChessManClass) o;
-        return color == that.color && getChessPieceName() == that.getChessPieceName();
+        return color == that.color && getChessPieceName().equals(that.getChessPieceName());
     }
 }
