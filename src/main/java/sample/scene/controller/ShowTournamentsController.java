@@ -14,8 +14,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
-import static sample.Main.objectInputStream;
-import static sample.Main.objectOutputStream;
+import static sample.client.Client.objectInputStream;
+import static sample.client.Client.objectOutputStream;
 
 public class ShowTournamentsController extends FatherController implements Initializable{
     @FXML

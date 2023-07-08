@@ -2,7 +2,7 @@ package sample.scene.controller;
 
 import java.io.IOException;
 
-import static sample.Main.objectOutputStream;
+import static sample.client.Client.objectOutputStream;
 
 public class MainSceneController extends FatherController {
 

@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import static sample.Main.*;
+import static sample.client.Client.*;
 
 public class SeekGameController extends FatherController implements Initializable{
     @FXML

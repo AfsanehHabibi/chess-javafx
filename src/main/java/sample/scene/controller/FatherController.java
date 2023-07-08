@@ -4,10 +4,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 
-import java.io.IOException;
-
-import static sample.Main.objectOutputStream;
-import static sample.Main.stage;
+import static sample.client.Client.stage;
 
 public class FatherController {
 

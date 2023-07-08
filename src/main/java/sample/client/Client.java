@@ -1,4 +1,4 @@
-package sample;
+package sample.client;
 
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -13,7 +13,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
-public class Main extends Application {
+public class Client extends Application {
 
     public static Stage stage;
     static Thread t;
@@ -41,7 +41,7 @@ public class Main extends Application {
             stage.setResizable(false);
             Parent root = FXMLLoader.load(getClass().getResource("/fxml/login.fxml"));
             primaryStage.setTitle("CHESS");
-            primaryStage.getIcons().add(new Image(Main.class.getResourceAsStream("/image/icon/chess_icon_blue.jpg")));
+            primaryStage.getIcons().add(new Image(Client.class.getResourceAsStream("/image/icon/chess_icon_blue.jpg")));
             primaryStage.setScene(new Scene(root, 600, 600));
             primaryStage.setOnCloseRequest((E)->{
                 try{

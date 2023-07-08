@@ -18,8 +18,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import static sample.Main.objectInputStream;
-import static sample.Main.objectOutputStream;
+import static sample.client.Client.objectInputStream;
+import static sample.client.Client.objectOutputStream;
 
 public class GameController extends FatherController implements Initializable {
     static Label copy_notations;

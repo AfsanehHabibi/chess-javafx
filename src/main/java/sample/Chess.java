@@ -10,7 +10,7 @@ import sample.model.util.Color;
 
 import java.io.IOException;
 
-import static sample.Main.objectOutputStream;
+import static sample.client.Client.objectOutputStream;
 
 
 public class Chess extends Thread {

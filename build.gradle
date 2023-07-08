@@ -28,7 +28,7 @@ javafx {
     modules = [ 'javafx.controls', 'javafx.fxml' ]
 }
 
-mainClassName = 'sample.Main'
+mainClassName = 'sample.client.Client'
 
 task runServerClass(type: JavaExec) {
     main = 'sample.server.Server' // Specify the fully qualified name of your main class here
@@ -36,7 +36,13 @@ task runServerClass(type: JavaExec) {
 }
 
 task runClientClass(type: JavaExec) {
-    main = 'sample.Main' // Specify the fully qualified name of your main class here
+    main = 'sample.client.Client' // Specify the fully qualified name of your main class here
+    classpath = sourceSets.main.runtimeClasspath
+    jvmArgs = ['--module-path', classpath.asPath, '--add-modules', 'javafx.controls,javafx.fxml']
+}
+
+task runClient2Class(type: JavaExec) {
+    main = 'sample.client.Client' // Specify the fully qualified name of your main class here
     classpath = sourceSets.main.runtimeClasspath
     jvmArgs = ['--module-path', classpath.asPath, '--add-modules', 'javafx.controls,javafx.fxml']
 }

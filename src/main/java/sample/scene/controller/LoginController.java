@@ -5,8 +5,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 
-import static sample.Main.objectInputStream;
-import static sample.Main.objectOutputStream;
+import static sample.client.Client.objectInputStream;
+import static sample.client.Client.objectOutputStream;
 
 public class LoginController extends FatherController {
     @FXML
