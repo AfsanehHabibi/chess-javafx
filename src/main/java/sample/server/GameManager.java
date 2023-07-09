@@ -88,9 +88,9 @@ public class GameManager {
         if (!((turn == Color.BLACK && client == blackClient)
                 || (turn == Color.WHITE && client == whiteClient)))
             return;
-        if (currentBoard.canMove(move.iSrc, move.jSrc, move.iDes, move.jDes)) {
+        if (currentBoard.canMove(move.getISrc(), move.getJSrc(), move.getIDes(), move.getJDes())) {
             ChessGameLogic beforeMoveBoard = currentBoard.clone();
-            currentBoard.move(move.iSrc, move.jSrc, move.iDes, move.jDes);
+            currentBoard.move(move.getISrc(), move.getJSrc(), move.getIDes(), move.getJDes());
 
             //!!! do not change this, sending the object without cloning it leads to unexpected
             // results
