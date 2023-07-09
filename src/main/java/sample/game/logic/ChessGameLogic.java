@@ -14,14 +14,6 @@ public class ChessGameLogic implements Serializable {
     private final ChessManClass[][] chessboard;
 
     public ChessGameLogic(ChessManClass[][] chessboard) throws InvalidBoardException {
-        if (chessboard == null)
-            throw new InvalidBoardException();
-        if (chessboard.length != 8)
-            throw new InvalidBoardException();
-        for (int i = 0; i < 8; i++) {
-            if (chessboard[i] == null || chessboard[i].length != 8)
-                throw new InvalidBoardException();
-        }
         if (!isBoardValid(chessboard))
             throw new InvalidBoardException();
         this.chessboard = chessboard;
@@ -129,7 +121,14 @@ public class ChessGameLogic implements Serializable {
         return chessboard[i_src][j_src].canMove(i_src, j_src, i_dest, j_dest, this);
     }
 
-    public boolean isBoardValid(ChessManClass[][] chessboard) {
+    private boolean isBoardValid(ChessManClass[][] chessboard) {
+        if (chessboard == null)
+            return false;
+        if (chessboard.length != 8)
+            return false;
+        for (int i = 0; i < 8; i++)
+            if (chessboard[i] == null || chessboard[i].length != 8)
+                return false;
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 if (chessboard[i][j] == null)
@@ -166,5 +165,10 @@ public class ChessGameLogic implements Serializable {
 
     public boolean isEmpty(int i, int j) {
         return chessboard[i][j] instanceof Empty;
+    }
+
+    @Override
+    public int hashCode() {
+        return Arrays.deepHashCode(chessboard);
     }
 }
