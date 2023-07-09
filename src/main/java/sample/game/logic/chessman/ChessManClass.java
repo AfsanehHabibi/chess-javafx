@@ -73,7 +73,7 @@ public abstract class ChessManClass implements Serializable {
 
     public abstract String getChessPieceName();
 
-    public char getColorChar() {
+    private char getColorChar() {
         if (color == null)
             return 'N';
         return switch (color) {
@@ -97,5 +97,10 @@ public abstract class ChessManClass implements Serializable {
         if (!(o instanceof ChessManClass)) return false;
         ChessManClass that = (ChessManClass) o;
         return color == that.color && getChessPieceName().equals(that.getChessPieceName());
+    }
+
+    @Override
+    public int hashCode() {
+        return color != null ? color.hashCode() : 0;
     }
 }
