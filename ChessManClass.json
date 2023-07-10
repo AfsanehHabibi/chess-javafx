@@ -3,11 +3,11 @@
     "operation": {
       "classname": "sample.game.logic.chessman.ChessManClass",
       "name": "canMoveNormal",
-      "parameterTypes": ["int", "int", "int", "int", "sample.game.logic.ChessGameLogic"]
+      "parameterTypes": ["sample.game.model.Move", "sample.game.logic.ChessGameLogic"]
     },
     "identifiers": {
       "parameters": [
-        "i_src", "j_src", "i_dest", "j_dest", "game"
+        "move", "game"
       ],
       "receiverName": "receiver",
       "returnName": "result"
@@ -16,7 +16,7 @@
       {
         "description": "the move should be within board",
         "guard": {
-          "condition": "i_src >= 0 && j_src >= 0 && i_dest >= 0 && j_dest >= 0 && i_src < 8 && j_src < 8 && i_dest < 8 && j_dest < 8"
+          "condition": "move != null"
         }
       }
     ]
@@ -25,11 +25,11 @@
     "operation": {
       "classname": "sample.game.logic.chessman.ChessManClass",
       "name": "canMove",
-      "parameterTypes": ["int", "int", "int", "int", "sample.game.logic.ChessGameLogic"]
+      "parameterTypes": ["sample.game.model.Move", "sample.game.logic.ChessGameLogic"]
     },
     "identifiers": {
       "parameters": [
-        "i_src", "j_src", "i_dest", "j_dest", "game"
+        "move", "game"
       ],
       "receiverName": "receiver",
       "returnName": "result"
@@ -38,7 +38,7 @@
       {
         "description": "the move should be within board",
         "guard": {
-          "condition": "i_src >= 0 && j_src >= 0 && i_dest >= 0 && j_dest >= 0 && i_src < 8 && j_src < 8 && i_dest < 8 && j_dest < 8"
+          "condition": "move != null"
         }
       }
     ]
@@ -47,11 +47,11 @@
     "operation": {
       "classname": "sample.game.logic.chessman.Bishop",
       "name": "canMoveNormal",
-      "parameterTypes": ["int", "int", "int", "int", "sample.game.logic.ChessGameLogic"]
+      "parameterTypes": ["sample.game.model.Move", "sample.game.logic.ChessGameLogic"]
     },
     "identifiers": {
       "parameters": [
-        "i_src", "j_src", "i_dest", "j_dest", "game"
+        "move", "game"
       ],
       "receiverName": "receiver",
       "returnName": "result"
@@ -60,7 +60,7 @@
       {
         "description": "the move should be within board",
         "guard": {
-          "condition": "i_src >= 0 && j_src >= 0 && i_dest >= 0 && j_dest >= 0 && i_src < 8 && j_src < 8 && i_dest < 8 && j_dest < 8"
+          "condition": "move != null"
         }
       }
     ]
@@ -69,11 +69,11 @@
     "operation": {
       "classname": "sample.game.logic.chessman.Empty",
       "name": "canMoveNormal",
-      "parameterTypes": ["int", "int", "int", "int", "sample.game.logic.ChessGameLogic"]
+      "parameterTypes": ["sample.game.model.Move", "sample.game.logic.ChessGameLogic"]
     },
     "identifiers": {
       "parameters": [
-        "i_src", "j_src", "i_dest", "j_dest", "game"
+        "move", "game"
       ],
       "receiverName": "receiver",
       "returnName": "result"
@@ -82,7 +82,7 @@
       {
         "description": "the move should be within board",
         "guard": {
-          "condition": "i_src >= 0 && j_src >= 0 && i_dest >= 0 && j_dest >= 0 && i_src < 8 && j_src < 8 && i_dest < 8 && j_dest < 8"
+          "condition": "move != null"
         }
       }
     ]
@@ -91,11 +91,11 @@
     "operation": {
       "classname": "sample.game.logic.chessman.King",
       "name": "canMoveNormal",
-      "parameterTypes": ["int", "int", "int", "int", "sample.game.logic.ChessGameLogic"]
+      "parameterTypes": ["sample.game.model.Move", "sample.game.logic.ChessGameLogic"]
     },
     "identifiers": {
       "parameters": [
-        "i_src", "j_src", "i_dest", "j_dest", "game"
+        "move", "game"
       ],
       "receiverName": "receiver",
       "returnName": "result"
@@ -104,7 +104,7 @@
       {
         "description": "the move should be within board",
         "guard": {
-          "condition": "i_src >= 0 && j_src >= 0 && i_dest >= 0 && j_dest >= 0 && i_src < 8 && j_src < 8 && i_dest < 8 && j_dest < 8"
+          "condition": "move != null"
         }
       }
     ]
@@ -113,11 +113,11 @@
     "operation": {
       "classname": "sample.game.logic.chessman.Knight",
       "name": "canMoveNormal",
-      "parameterTypes": ["int", "int", "int", "int", "sample.game.logic.ChessGameLogic"]
+      "parameterTypes": ["sample.game.model.Move", "sample.game.logic.ChessGameLogic"]
     },
     "identifiers": {
       "parameters": [
-        "i_src", "j_src", "i_dest", "j_dest", "game"
+        "move", "game"
       ],
       "receiverName": "receiver",
       "returnName": "result"
@@ -126,7 +126,7 @@
       {
         "description": "the move should be within board",
         "guard": {
-          "condition": "i_src >= 0 && j_src >= 0 && i_dest >= 0 && j_dest >= 0 && i_src < 8 && j_src < 8 && i_dest < 8 && j_dest < 8"
+          "condition": "move != null"
         }
       }
     ]
@@ -135,11 +135,11 @@
     "operation": {
       "classname": "sample.game.logic.chessman.Pawn",
       "name": "canMoveNormal",
-      "parameterTypes": ["int", "int", "int", "int", "sample.game.logic.ChessGameLogic"]
+      "parameterTypes": ["sample.game.model.Move", "sample.game.logic.ChessGameLogic"]
     },
     "identifiers": {
       "parameters": [
-        "i_src", "j_src", "i_dest", "j_dest", "game"
+        "move", "game"
       ],
       "receiverName": "receiver",
       "returnName": "result"
@@ -148,7 +148,7 @@
       {
         "description": "the move should be within board",
         "guard": {
-          "condition": "i_src >= 0 && j_src >= 0 && i_dest >= 0 && j_dest >= 0 && i_src < 8 && j_src < 8 && i_dest < 8 && j_dest < 8"
+          "condition": "move != null"
         }
       }
     ]
@@ -157,11 +157,11 @@
     "operation": {
       "classname": "sample.game.logic.chessman.Queen",
       "name": "canMoveNormal",
-      "parameterTypes": ["int", "int", "int", "int", "sample.game.logic.ChessGameLogic"]
+      "parameterTypes": ["sample.game.model.Move", "sample.game.logic.ChessGameLogic"]
     },
     "identifiers": {
       "parameters": [
-        "i_src", "j_src", "i_dest", "j_dest", "game"
+        "move", "game"
       ],
       "receiverName": "receiver",
       "returnName": "result"
@@ -170,7 +170,7 @@
       {
         "description": "the move should be within board",
         "guard": {
-          "condition": "i_src >= 0 && j_src >= 0 && i_dest >= 0 && j_dest >= 0 && i_src < 8 && j_src < 8 && i_dest < 8 && j_dest < 8"
+          "condition": "move != null"
         }
       }
     ]
@@ -179,11 +179,11 @@
     "operation": {
       "classname": "sample.game.logic.chessman.Rook",
       "name": "canMoveNormal",
-      "parameterTypes": ["int", "int", "int", "int", "sample.game.logic.ChessGameLogic"]
+      "parameterTypes": ["sample.game.model.Move", "sample.game.logic.ChessGameLogic"]
     },
     "identifiers": {
       "parameters": [
-        "i_src", "j_src", "i_dest", "j_dest", "game"
+        "move", "game"
       ],
       "receiverName": "receiver",
       "returnName": "result"
@@ -192,7 +192,7 @@
       {
         "description": "the move should be within board",
         "guard": {
-          "condition": "i_src >= 0 && j_src >= 0 && i_dest >= 0 && j_dest >= 0 && i_src < 8 && j_src < 8 && i_dest < 8 && j_dest < 8"
+          "condition": "move != null"
         }
       }
     ]
