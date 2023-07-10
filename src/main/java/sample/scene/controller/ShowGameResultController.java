@@ -16,7 +16,6 @@ import static sample.client.Client.objectInputStream;
 import static sample.client.Client.objectOutputStream;
 
 public class ShowGameResultController extends FatherController implements Initializable {
-
     @FXML
     VBox game_list;
 
@@ -28,7 +27,6 @@ public class ShowGameResultController extends FatherController implements Initia
             try {
                 synchronized (objectInputStream) {
                     objectOutputStream.writeUTF("games history");
-                    System.out.println("gggggg");
                     objectOutputStream.flush();
                     String receive = objectInputStream.readUTF();
                     while (!receive.startsWith("over")) {
@@ -54,20 +52,7 @@ public class ShowGameResultController extends FatherController implements Initia
                             strings[3]
                     ));
             temp.setOnMouseClicked((E)->{
-                Thread data_send=new Thread(()->{
-                   try {
-                       objectOutputStream.writeUTF("reply of game "+'0');
-                       objectOutputStream.flush();
-                   } catch (IOException e) {
-                       e.printStackTrace();
-                   }
-                });
-                data_send.start();
-                try {
-                    data_send.join();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+                serverStreamer.writeString("reply of game " + '0');
                 Platform.runLater(this::loadReplyScene);
             });
             game_list.getChildren().add(temp);

@@ -96,24 +96,10 @@ public class RequestGameController extends FatherController implements Initializ
                             strings[13] + " " + strings[14]
                     ));
             System.out.println(strings[11]);
+            String chose_op = strings[6];
             temp.setOnMouseClicked((event) -> {
-                Task task = new Task() {
-                    @Override
-                    protected Object call() throws Exception {
-                        String chose_op = strings[6];
-                        objectOutputStream.writeUTF("game with " + chose_op + " " + strings[12]);
-                        System.out.println(strings[12]);
-                        objectOutputStream.flush();
-                        return null;
-                    }
-                };
-                Thread t = new Thread(task);
-                t.start();
-                try {
-                    t.join();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+                serverStreamer.writeString("game with " + chose_op + " " + strings[12]);
+                System.out.println(strings[12]);
             });
             game_list.getChildren().add(temp);
         }

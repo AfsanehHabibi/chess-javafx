@@ -7,14 +7,13 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import sample.game.Chess;
+import sample.game.logic.ChessGameLogic;
 import sample.game.view.ChatIOController;
 import sample.model.chat.Message;
 import sample.model.game.GameMoveRecord;
 import sample.model.util.Clock;
 import sample.model.util.Color;
-import sample.game.logic.ChessGameLogic;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -236,74 +235,20 @@ public class GameController extends FatherController implements Initializable {
 
     public void sendMassage() {
         Message message = chatIOController.getMessageToBeSendAndClear();
-        Thread send = new Thread(() -> {
-            try {
-                objectOutputStream.writeUTF("chat");
-                objectOutputStream.flush();
-                objectOutputStream.writeObject(message);
-                objectOutputStream.flush();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        });
-        send.start();
-        try {
-            send.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        serverStreamer.writeString("chat");
+        serverStreamer.writeObject(message);
     }
 
     public void askDraw() {
         Platform.runLater(() -> {
             if (!draw.getText().equals("Draw")) {
-                Thread send = new Thread(() -> {
-                    try {
-                        objectOutputStream.writeUTF("accept draw");
-                        objectOutputStream.flush();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                });
-                send.start();
-                try {
-                    send.join();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+                serverStreamer.writeString("accept draw");
             }
         });
-        Thread send = new Thread(() -> {
-            try {
-                objectOutputStream.writeUTF("want draw");
-                objectOutputStream.flush();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        });
-        send.start();
-        try {
-            send.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        serverStreamer.writeString("want draw");
     }
 
     public void askLose() {
-        Thread send = new Thread(() -> {
-            try {
-                objectOutputStream.writeUTF("accept lose");
-                objectOutputStream.flush();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        });
-        send.start();
-        try {
-            send.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        serverStreamer.writeString("accept lose");
     }
 }
-

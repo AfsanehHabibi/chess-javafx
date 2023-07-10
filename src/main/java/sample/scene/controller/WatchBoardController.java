@@ -51,23 +51,9 @@ public class WatchBoardController extends FatherController implements Initializa
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        Task t0=new Task() {
-            @Override
-            protected Object call() throws Exception {
-                objectOutputStream.writeUTF("ready to watch");
-                objectOutputStream.flush();
-                ArrayList<GameMoveRecord> moves = (ArrayList<GameMoveRecord>) objectInputStream.readObject();
-                Platform.runLater(() -> chess.updateBoardAndNotation(moves));
-                return null;
-            }
-        };
-        Thread first=new Thread(t0);
-        first.start();
-        try {
-            first.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        serverStreamer.writeString("ready to watch");
+        ArrayList<GameMoveRecord> moves = (ArrayList<GameMoveRecord>) serverStreamer.readObject();
+        Platform.runLater(() -> chess.updateBoardAndNotation(moves));
         Task task=new Task() {
             @Override
             protected Object call() {
@@ -98,21 +84,7 @@ public class WatchBoardController extends FatherController implements Initializa
 
     public void sendMassage() {
         Message message = chatIOController.getMessageToBeSendAndClear();
-        Thread send = new Thread(() -> {
-            try {
-                objectOutputStream.writeUTF("chat");
-                objectOutputStream.flush();
-                objectOutputStream.writeObject(message);
-                objectOutputStream.flush();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        });
-        send.start();
-        try {
-            send.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        serverStreamer.writeString("chat");
+        serverStreamer.writeObject(message);
     }
 }

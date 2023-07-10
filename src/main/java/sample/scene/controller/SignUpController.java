@@ -10,12 +10,8 @@ import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-
-import static sample.client.Client.objectInputStream;
-import static sample.client.Client.objectOutputStream;
 
 public class SignUpController extends FatherController implements Initializable{
     @FXML
@@ -82,55 +78,26 @@ public class SignUpController extends FatherController implements Initializable{
         if (!checkAccountValidity()) {
             return;
         }
-        Thread send=new Thread(()->{
-            try {
-                String info;
-                if(edit)
-                    info="edit ";
-                else
-                    info="add ";
-                objectOutputStream.writeUTF(info+ first_name.getText() + " " +
-                        last_name.getText() + " " +
-                        password.getText() + " " + email.getText()+" "
-                        +url
-                );
-                objectOutputStream.flush();
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
-        send.start();
-        try {
-            send.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        String info;
+        if(edit)
+            info="edit ";
+        else
+            info="add ";
+        serverStreamer.writeString(info+ first_name.getText() + " " +
+                last_name.getText() + " " +
+                password.getText() + " " + email.getText() + " "
+                + url);
         loadMainScene();
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        final String[] receive = new String[1];
-        Thread send=new Thread(()->{
-            try {
-                objectOutputStream.writeUTF("is edit");
-                objectOutputStream.flush();
-                receive[0] =objectInputStream.readUTF();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        });
-        send.start();
-        try {
-            send.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        if(receive[0].startsWith("no"))
+        serverStreamer.writeString("is edit");
+        String receive = serverStreamer.readString();
+        if(receive.startsWith("no"))
             return;
         edit = true;
-        String[] info=receive[0].split(" ");
+        String[] info = receive.split(" ");
         first_name.setText(info[1]);
         last_name.setText(info[2]);
         email.setText(info[3]);

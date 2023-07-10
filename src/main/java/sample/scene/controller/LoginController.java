@@ -5,9 +5,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 
-import static sample.client.Client.objectInputStream;
-import static sample.client.Client.objectOutputStream;
-
 public class LoginController extends FatherController {
     @FXML
     TextField username;
@@ -15,21 +12,10 @@ public class LoginController extends FatherController {
     PasswordField password;
 
     public void login() {
-        Thread send =new Thread(()->{
-            try {
-                objectOutputStream.writeUTF("login " + username.getText() + " " + password.getText());
-                objectOutputStream.flush();
-                String receive=objectInputStream.readUTF();
-                Platform.runLater(()-> {
-                    if (receive.equals("Player found")) loadMainScene();
-                });
-            } catch (Exception ignored){}
+        serverStreamer.writeString("login " + username.getText() + " " + password.getText());
+        String receive = serverStreamer.readString();
+        Platform.runLater(()-> {
+            if (receive.equals("Player found")) loadMainScene();
         });
-        send.start();
-        try {
-            send.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 }

@@ -3,10 +3,16 @@ package sample.scene.controller;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import sample.stream.IOToServerStreamer;
 
 import static sample.client.Client.stage;
 
 public class FatherController {
+    IOToServerStreamer serverStreamer;
+
+    public FatherController() {
+        serverStreamer = new IOToServerStreamer();
+    }
 
     public void loadPage(String name){
         try {
