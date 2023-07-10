@@ -27,12 +27,4 @@ public class RandoopSeedGenerator {
 
     @TestValue
     public static int i7 = 7;
-
-    public Color getBlackColor() {
-        return Color.BLACK;
-    }
-
-    public Color getWhiteColor() {
-        return Color.WHITE;
-    }
 }
