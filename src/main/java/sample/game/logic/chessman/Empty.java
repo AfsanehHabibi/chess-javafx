@@ -1,5 +1,6 @@
 package sample.game.logic.chessman;
 
+import sample.game.model.Move;
 import sample.model.util.Color;
 import sample.game.logic.ChessGameLogic;
 
@@ -14,7 +15,7 @@ public class Empty extends ChessManClass {
     }
 
     @Override
-    public boolean canMoveNormal(int i_src, int j_src, int i_dest, int j_dest, ChessGameLogic game) {
+    public boolean canMoveNormal(Move move, ChessGameLogic game) {
         return false;
     }
 

@@ -3,10 +3,10 @@ package sample.game.model;
 import java.io.Serializable;
 
 public class Move implements Serializable {
-    private int iSrc;
-    private int jSrc;
-    private int iDes;
-    private int jDes;
+    private final int iSrc;
+    private final int jSrc;
+    private final int iDes;
+    private final int jDes;
 
     public Move(int iSrc, int jSrc, int iDes, int jDes) {
         this.iSrc = iSrc;

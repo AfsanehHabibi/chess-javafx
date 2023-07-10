@@ -1,5 +1,6 @@
 package sample.game.logic.chessman;
 
+import sample.game.model.Move;
 import sample.model.util.Color;
 import sample.game.logic.ChessGameLogic;
 
@@ -20,36 +21,36 @@ public class Rook extends ChessManClass {
     }
 
     @Override
-    public boolean canMoveNormal(int i_src, int j_src, int i_dest, int j_dest, ChessGameLogic game) {
+    public boolean canMoveNormal(Move move, ChessGameLogic game) {
         ChessManClass[][] chess_board = game.getChessboard();
-        if ((i_dest == i_src ^ j_dest == j_src) && chess_board[i_dest][j_dest].getColor() != color) {
-            if (i_dest < i_src) {
-                for (int i = i_src - 1; i > i_dest; i--) {
-                    if (chess_board[i][j_dest].getColor() != null) {
+        if ((move.getIDes() == move.getISrc() ^ move.getJDes() == move.getJSrc()) && chess_board[move.getIDes()][move.getJDes()].getColor() != color) {
+            if (move.getIDes() < move.getISrc()) {
+                for (int i = move.getISrc() - 1; i > move.getIDes(); i--) {
+                    if (chess_board[i][move.getJDes()].getColor() != null) {
                         return false;
                     }
                 }
                 return true;
             }
-            if (i_dest > i_src) {
-                for (int i = i_src + 1; i < i_dest; i++) {
-                    if (chess_board[i][j_dest].getColor() != null) {
+            if (move.getIDes() > move.getISrc()) {
+                for (int i = move.getISrc() + 1; i < move.getIDes(); i++) {
+                    if (chess_board[i][move.getJDes()].getColor() != null) {
                         return false;
                     }
                 }
                 return true;
             }
-            if (j_dest < j_src) {
-                for (int j = j_src - 1; j > j_dest; j--) {
-                    if (chess_board[i_dest][j].getColor() != null) {
+            if (move.getJDes() < move.getJSrc()) {
+                for (int j = move.getJSrc() - 1; j > move.getJDes(); j--) {
+                    if (chess_board[move.getIDes()][j].getColor() != null) {
                         return false;
                     }
                 }
                 return true;
             }
-            if (j_dest > j_src) {
-                for (int j = j_src + 1; j < j_dest; j++) {
-                    if (chess_board[i_dest][j].getColor() != null) {
+            if (move.getJDes() > move.getJSrc()) {
+                for (int j = move.getJSrc() + 1; j < move.getJDes(); j++) {
+                    if (chess_board[move.getIDes()][j].getColor() != null) {
                         return false;
                     }
                 }

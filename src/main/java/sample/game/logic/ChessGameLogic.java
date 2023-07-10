@@ -2,6 +2,7 @@ package sample.game.logic;
 
 import sample.game.logic.chessman.*;
 import sample.game.logic.exception.InvalidBoardException;
+import sample.game.model.Move;
 import sample.model.util.Color;
 
 import java.io.*;
@@ -71,7 +72,8 @@ public class ChessGameLogic implements Serializable {
                 for (int j = 0; j < 8; j++) {
                     for (int k = 0; k < 8; k++) {
                         for (int l = 0; l < 8; l++) {
-                            if (chessboard[i][j].getColor() == color && chessboard[i][j].canMove(i, j, k, l, this)) {
+                            Move move = new Move(i, j, k, l);
+                            if (chessboard[i][j].getColor() == color && chessboard[i][j].canMove(move, this)) {
                                 return false;
                             }
                         }
@@ -101,24 +103,24 @@ public class ChessGameLogic implements Serializable {
         return chessboard;
     }
 
-    public void move(int i_src, int j_src, int i_dest, int j_dest) {
-        if (chessboard[i_src][j_src] instanceof Pawn) {
-            if (i_dest == 0 || i_dest == 7) {
-                chessboard[i_dest][j_dest] = new Queen(chessboard[i_src][j_src].getColor());
+    public void move(Move move) {
+        if (chessboard[move.getISrc()][move.getJSrc()] instanceof Pawn) {
+            if (move.getIDes() == 0 || move.getIDes() == 7) {
+                chessboard[move.getIDes()][move.getJDes()] = new Queen(chessboard[move.getISrc()][move.getJSrc()].getColor());
             } else {
-                Pawn pawn = new Pawn(chessboard[i_src][j_src].getColor());
-                pawn.setEnPassent((i_src == 7 && i_dest == 5) || (i_src == 1 && i_dest == 3));
-                chessboard[i_dest][j_dest] = pawn;
-                chessboard[i_src][j_src] = new Empty();
+                Pawn pawn = new Pawn(chessboard[move.getISrc()][move.getJSrc()].getColor());
+                pawn.setEnPassent((move.getISrc() == 7 && move.getIDes() == 5) || (move.getISrc() == 1 && move.getIDes() == 3));
+                chessboard[move.getIDes()][move.getJDes()] = pawn;
+                chessboard[move.getISrc()][move.getJSrc()] = new Empty();
             }
         } else {
-            chessboard[i_dest][j_dest] = chessboard[i_src][j_src].clone();
-            chessboard[i_src][j_src] = new Empty();
+            chessboard[move.getIDes()][move.getJDes()] = chessboard[move.getISrc()][move.getJSrc()].clone();
+            chessboard[move.getISrc()][move.getJSrc()] = new Empty();
         }
     }
 
-    public boolean canMove(int i_src, int j_src, int i_dest, int j_dest) {
-        return chessboard[i_src][j_src].canMove(i_src, j_src, i_dest, j_dest, this);
+    public boolean canMove(Move move) {
+        return chessboard[move.getISrc()][move.getJSrc()].canMove(move, this);
     }
 
     private boolean isBoardValid(ChessManClass[][] chessboard) {

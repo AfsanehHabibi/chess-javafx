@@ -1,5 +1,6 @@
 package sample.game.logic.chessman;
 
+import sample.game.model.Move;
 import sample.model.util.Color;
 import sample.game.logic.ChessGameLogic;
 
@@ -20,16 +21,16 @@ public class Queen extends ChessManClass {
     }
 
     @Override
-    public boolean canMoveNormal(int i_src, int j_src, int i_dest, int j_dest, ChessGameLogic game) {
+    public boolean canMoveNormal(Move move, ChessGameLogic game) {
         ChessManClass[][] chess_board = game.getChessboard();
-        if (Math.abs(i_dest - i_src) == Math.abs(j_dest - j_src) &&
-                chess_board[i_dest][j_dest].getColor() != color) {
-            if ((new Bishop(color)).canMoveNormal(i_src, j_src, i_dest, j_dest, game)) {
+        if (Math.abs(move.getIDes() - move.getISrc()) == Math.abs(move.getJDes() - move.getJSrc()) &&
+                chess_board[move.getIDes()][move.getJDes()].getColor() != color) {
+            if ((new Bishop(color)).canMoveNormal(move, game)) {
                 return true;
             }
         }
-        if ((i_dest == i_src ^ j_dest == j_src) && chess_board[i_dest][j_dest].getColor() != color) {
-            return (new Rook(color)).canMoveNormal(i_src, j_src, i_dest, j_dest, game);
+        if ((move.getIDes() == move.getISrc() ^ move.getJDes() == move.getJSrc()) && chess_board[move.getIDes()][move.getJDes()].getColor() != color) {
+            return (new Rook(color)).canMoveNormal(move, game);
         }
         return false;
     }

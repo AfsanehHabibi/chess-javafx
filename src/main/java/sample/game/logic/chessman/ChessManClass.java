@@ -1,6 +1,7 @@
 package sample.game.logic.chessman;
 
 
+import sample.game.model.Move;
 import sample.model.util.Color;
 import sample.game.logic.ChessGameLogic;
 
@@ -9,7 +10,7 @@ import java.io.Serializable;
 public abstract class ChessManClass implements Serializable {
     Color color;
 
-    abstract boolean canMoveNormal(int i_src, int j_src, int i_dest, int j_dest, ChessGameLogic game);
+    abstract boolean canMoveNormal(Move move, ChessGameLogic game);
 
     public Color getColor() {
         return color;
@@ -18,11 +19,11 @@ public abstract class ChessManClass implements Serializable {
     @Override
     public abstract ChessManClass clone();
 
-    public boolean canMove(int i_src, int j_src, int i_dest, int j_dest, ChessGameLogic game) {
+    public boolean canMove(Move move, ChessGameLogic game) {
         if (IsProtectedByOpponent(game, color)) {
-            return ReIsProtectedByOpponent(game, color, i_src, j_src, i_dest, j_dest);
+            return ReIsProtectedByOpponent(game, color, move);
         }
-        return canMoveNormal(i_src, j_src, i_dest, j_dest, game);
+        return canMoveNormal(move, game);
     }
 
     private int positionJKing(ChessManClass[][] chess_board, Color color) {
@@ -47,11 +48,11 @@ public abstract class ChessManClass implements Serializable {
         return 0;
     }
 
-    private boolean ReIsProtectedByOpponent(ChessGameLogic game, Color color, int i_src, int j_src, int i_dest, int j_dest) {
-        if (!canMoveNormal(i_src, j_src, i_dest, j_dest, game))
+    private boolean ReIsProtectedByOpponent(ChessGameLogic game, Color color, Move move) {
+        if (!canMoveNormal(move, game))
             return false;
         ChessGameLogic copy = game.clone();
-        copy.move(i_src, j_src, i_dest, j_dest);
+        copy.move(move);
         return !IsProtectedByOpponent(copy, color);
 
     }
@@ -62,7 +63,8 @@ public abstract class ChessManClass implements Serializable {
         int j_king = positionJKing(chess_board, color);
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
-                if (chess_board[i][j].canMoveNormal(i, j, i_king, j_king, game) &&
+                Move move = new Move(i, j, i_king, j_king);
+                if (chess_board[i][j].canMoveNormal(move, game) &&
                         chess_board[i][j].getColor() != color) {
                     return true;
                 }

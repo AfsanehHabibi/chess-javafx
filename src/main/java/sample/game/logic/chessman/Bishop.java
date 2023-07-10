@@ -1,5 +1,6 @@
 package sample.game.logic.chessman;
 
+import sample.game.model.Move;
 import sample.model.util.Color;
 import sample.game.logic.ChessGameLogic;
 
@@ -20,33 +21,33 @@ public class Bishop extends ChessManClass {
     }
 
     @Override
-    public boolean canMoveNormal(int i_src, int j_src, int i_dest, int j_dest, ChessGameLogic game) {
+    public boolean canMoveNormal(Move move, ChessGameLogic game) {
         ChessManClass[][] chess_board = game.getChessboard();
-        if (Math.abs(i_dest - i_src) == Math.abs(j_dest - j_src) &&
-                chess_board[i_dest][j_dest].getColor() != color) {
-            if (i_dest > i_src && j_dest > j_src) {
-                for (int i = i_src + 1, j = j_src + 1; i < i_dest && j < j_dest; i++, j++) {
+        if (Math.abs(move.getIDes() - move.getISrc()) == Math.abs(move.getJDes() - move.getJSrc()) &&
+                chess_board[move.getIDes()][move.getJDes()].getColor() != color) {
+            if (move.getIDes() > move.getISrc() && move.getJDes() > move.getJSrc()) {
+                for (int i = move.getISrc() + 1, j = move.getJSrc() + 1; i < move.getIDes() && j < move.getJDes(); i++, j++) {
                     if (chess_board[i][j].getColor() != null) {
                         return false;
                     }
                 }
                 return true;
-            } else if (i_dest > i_src && j_dest < j_src) {
-                for (int i = i_src + 1, j = j_src - 1; i < i_dest && j > j_dest; i++, j--) {
+            } else if (move.getIDes() > move.getISrc() && move.getJDes() < move.getJSrc()) {
+                for (int i = move.getISrc() + 1, j = move.getJSrc() - 1; i < move.getIDes() && j > move.getJDes(); i++, j--) {
                     if (chess_board[i][j].getColor() != null) {
                         return false;
                     }
                 }
                 return true;
-            } else if (i_dest < i_src && j_dest < j_src) {
-                for (int i = i_src - 1, j = j_src - 1; i > i_dest && j > j_dest; i--, j--) {
+            } else if (move.getIDes() < move.getISrc() && move.getJDes() < move.getJSrc()) {
+                for (int i = move.getISrc() - 1, j = move.getJSrc() - 1; i > move.getIDes() && j > move.getJDes(); i--, j--) {
                     if (chess_board[i][j].getColor() != null) {
                         return false;
                     }
                 }
                 return true;
-            } else if (i_dest < i_src && j_dest > j_src) {
-                for (int i = i_src - 1, j = j_src + 1; i > i_dest && j < j_dest; i--, j++) {
+            } else if (move.getIDes() < move.getISrc() && move.getJDes() > move.getJSrc()) {
+                for (int i = move.getISrc() - 1, j = move.getJSrc() + 1; i > move.getIDes() && j < move.getJDes(); i--, j++) {
                     if (chess_board[i][j].getColor() != null) {
                         return false;
                     }

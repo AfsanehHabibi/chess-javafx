@@ -1,5 +1,6 @@
 package sample.game.logic.chessman;
 
+import sample.game.model.Move;
 import sample.model.util.Color;
 import sample.game.logic.ChessGameLogic;
 
@@ -21,10 +22,10 @@ public class King extends ChessManClass {
 
 
     @Override
-    public boolean canMoveNormal(int i_src, int j_src, int i_dest, int j_dest, ChessGameLogic game) {
+    public boolean canMoveNormal(Move move, ChessGameLogic game) {
         ChessManClass[][] chess_board = game.getChessboard();
-        return chess_board[i_dest][j_dest].getColor() != chess_board[i_src][j_src].getColor()
-                && Math.abs(i_dest - i_src) <= 1 && Math.abs(j_dest - j_src) <= 1
-                && !(i_dest == i_src && j_dest == j_src);
+        return chess_board[move.getIDes()][move.getJDes()].getColor() != chess_board[move.getISrc()][move.getJSrc()].getColor()
+                && Math.abs(move.getIDes() - move.getISrc()) <= 1 && Math.abs(move.getJDes() - move.getJSrc()) <= 1
+                && !(move.getIDes() == move.getISrc() && move.getJDes() == move.getJSrc());
     }
 }

@@ -5,6 +5,7 @@ import javafx.scene.layout.GridPane;
 import sample.game.Chess;
 import sample.game.logic.ChessGameLogic;
 import sample.game.logic.chessman.*;
+import sample.game.model.Move;
 import sample.game.view.chessman.*;
 import sample.model.util.Color;
 
@@ -51,11 +52,10 @@ public class ChessboardIOController {
             turnBoardBorderOff();
             for (int k = 0; k < 8; k++) {
                 for (int l = 0; l < 8; l++) {
-                    if (gameLogic.canMove(i, j, k, l)) {
+                    Move move = new Move(i, j, k, l);
+                    if (gameLogic.canMove(move)) {
                         turnOnBorder(chessManViews[k][l].borderPane);
-                        int finalL = l;
-                        int finalK = k;
-                        chessManViews[k][l].borderPane.setOnMouseClicked((event1) -> chess.finalMove(i, j, finalK, finalL, true));
+                        chessManViews[k][l].borderPane.setOnMouseClicked((event1) -> chess.finalMove(move, true));
                     }
                 }
             }

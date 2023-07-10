@@ -4,7 +4,6 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.GridPane;
 import sample.game.logic.ChessGameLogic;
-import sample.game.logic.chessman.ChessManClass;
 import sample.game.logic.chessman.Empty;
 import sample.game.model.Move;
 import sample.game.view.ChessboardIOController;
@@ -65,20 +64,20 @@ public class Chess extends Thread {
         return mat;
     }
 
-    public void finalMove(int i_src, int j_src, int i_dest, int j_dest, boolean send_data) {
-        if (gameLogic.getChessboard()[i_src][j_src] instanceof Empty)
+    public void finalMove(Move move, boolean send_data) {
+        if (gameLogic.getChessboard()[move.getISrc()][move.getJSrc()] instanceof Empty)
             return;
         if (send_data) {
-            sendData(i_src, j_src, i_dest, j_dest);
+            sendData(move);
             chessboardIOController.turnOffClicks();
         }
     }
 
-    void sendData(int i_src, int j_src, int i_dest, int j_dest) {
+    void sendData(Move move) {
         try {
             objectOutputStream.writeUTF("sending move");
             objectOutputStream.flush();
-            objectOutputStream.writeObject(new Move(i_src, j_src, i_dest, j_dest));
+            objectOutputStream.writeObject(move);
             objectOutputStream.flush();
             //Controller.count = !Controller.count;
         } catch (Exception e) {

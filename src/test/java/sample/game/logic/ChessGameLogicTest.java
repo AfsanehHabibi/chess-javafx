@@ -1,8 +1,7 @@
 package sample.game.logic;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
+import sample.game.model.Move;
 
 import java.io.*;
 
@@ -15,11 +14,13 @@ public class ChessGameLogicTest {
     public void whenGivenTooChessGameLogicWithSameBoard_TheyShouldBeEqual() {
         ChessGameLogic gameLogic1 = new ChessGameLogic();
         ChessGameLogic gameLogic2 = new ChessGameLogic();
-        gameLogic1.move(1, 0, 2, 0);
-        gameLogic1.move(1, 3, 2, 3);
+        Move move1 = new Move(1, 0, 2, 0);
+        Move move2 = new Move(1, 3, 2, 3);
+        gameLogic1.move(move1);
+        gameLogic1.move(move2);
 
-        gameLogic2.move(1, 3, 2, 3);
-        gameLogic2.move(1, 0, 2, 0);
+        gameLogic2.move(move2);
+        gameLogic2.move(move1);
         assertEquals(gameLogic1, gameLogic2);
     }
 
@@ -28,9 +29,9 @@ public class ChessGameLogicTest {
     public void whenGivenTooChessGameLogicWithDifferentBoard_TheyShouldNotBeEqual() {
         ChessGameLogic gameLogic1 = new ChessGameLogic();
         ChessGameLogic gameLogic2 = new ChessGameLogic();
-        gameLogic1.move(1, 0, 2, 0);
+        gameLogic1.move(new Move(1, 0, 2, 0));
 
-        gameLogic2.move(1, 3, 2, 3);
+        gameLogic2.move(new Move(1, 3, 2, 3));
         assertNotEquals(gameLogic1, gameLogic2);
     }
 
@@ -38,8 +39,8 @@ public class ChessGameLogicTest {
     @Test
     public void whenDeserializingAChessManTheObjectIsEqualToStartingObject() throws IOException, ClassNotFoundException {
         ChessGameLogic original = new ChessGameLogic();
-        original.move(1, 6, 2, 6);
-        original.move(6, 4, 5, 4);
+        original.move(new Move(1, 6, 2, 6));
+        original.move(new Move(6, 4, 5, 4));
         // serialize the object
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream oos = new ObjectOutputStream(baos);
